@@ -13,37 +13,37 @@ var _waypoints: PackedVector3Array = []
 var _waypoint_index: int = 0
 
 func set_waypoints(points: PackedVector3Array) -> void:
-_waypoints = points
-_waypoint_index = 0
+	_waypoints = points
+	_waypoint_index = 0
 
 func _physics_process(delta: float) -> void:
-if _waypoints.is_empty():
-return
+	if _waypoints.is_empty():
+		return
 
-var target := _waypoints[_waypoint_index]
-var to_target := target - global_position
-if to_target.length() < 1.5:
-_waypoint_index = (_waypoint_index + 1) % _waypoints.size()
-target = _waypoints[_waypoint_index]
-to_target = target - global_position
+	var target: Vector3 = _waypoints[_waypoint_index]
+	var to_target: Vector3 = target - global_position
+	if to_target.length() < 1.5:
+		_waypoint_index = (_waypoint_index + 1) % _waypoints.size()
+		target = _waypoints[_waypoint_index]
+		to_target = target - global_position
 
-var desired_dir := to_target.normalized()
-var forward := -global_transform.basis.z
-var angle := forward.signed_angle_to(desired_dir, Vector3.UP)
-rotate_y(clamp(angle, -turn_speed_factor * delta, turn_speed_factor * delta))
+	var desired_dir: Vector3 = to_target.normalized()
+	var forward: Vector3 = -global_transform.basis.z
+	var angle: float = forward.signed_angle_to(desired_dir, Vector3.UP)
+	rotate_y(clamp(angle, -turn_speed_factor * delta, turn_speed_factor * delta))
 
-var desired_speed := target_speed
-var front_sensor := get_node_or_null("FrontSensor") as RayCast3D
-if front_sensor and front_sensor.is_colliding():
-var hit_distance := front_sensor.get_collision_point().distance_to(front_sensor.global_position)
-if hit_distance < hard_stop_distance:
-desired_speed = 0.0
-elif hit_distance < safe_follow_distance:
-desired_speed = target_speed * 0.35
+	var desired_speed: float = target_speed
+	var front_sensor := get_node_or_null("FrontSensor") as RayCast3D
+	if front_sensor and front_sensor.is_colliding():
+		var hit_distance: float = front_sensor.get_collision_point().distance_to(front_sensor.global_position)
+		if hit_distance < hard_stop_distance:
+			desired_speed = 0.0
+		elif hit_distance < safe_follow_distance:
+			desired_speed = target_speed * 0.35
 
-if _current_speed < desired_speed:
-_current_speed = min(desired_speed, _current_speed + acceleration_rate * delta)
-else:
-_current_speed = max(desired_speed, _current_speed - brake_rate * delta)
+	if _current_speed < desired_speed:
+		_current_speed = min(desired_speed, _current_speed + acceleration_rate * delta)
+	else:
+		_current_speed = max(desired_speed, _current_speed - brake_rate * delta)
 
-translate(-transform.basis.z * _current_speed * delta)
+	translate(-transform.basis.z * _current_speed * delta)

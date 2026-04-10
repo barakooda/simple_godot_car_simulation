@@ -39,6 +39,35 @@ It should **not** optimize for:
 
 ---
 
+## 1A. Current Implemented State (2026-04-10)
+
+This section reflects what is currently implemented and working in the project.
+
+### Confirmed implemented behavior
+
+- Player car drives with forward/reverse/brake/steer and reset behavior.
+- Driving is tuned for arcade street feel with a hard speed cap at approximately 80 km/h.
+- Main HUD layout is active with:
+  - large main camera window,
+  - always-on top-left minimap (aerial camera),
+  - right-side front/rear/left/right camera column.
+- Main window starts on Front camera.
+- Tab cycles main camera between front/rear/left/right.
+- Side camera cards can be clicked to set main view.
+- Per-camera FOV controls are active (slider + numeric value + per-camera lock grouping).
+- Minimap zoom is controlled by mouse wheel while hovering the minimap.
+- Live FPS counter is shown in the main window.
+- Camera rig follow issue is fixed by syncing SubViewport feed cameras to anchored source cameras on the vehicle.
+- Ground perimeter walls are present to keep the car inside world bounds.
+- Buildings and trees have collisions, so the car cannot pass through them.
+
+### Notes on scope discipline
+
+- The driving controller remains the same custom `RigidBody3D` mechanism.
+- Changes were done as parameter tuning and bug fixes, not a controller architecture rewrite.
+
+---
+
 ## 2. Design philosophy
 
 ### Core decision

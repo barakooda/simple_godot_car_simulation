@@ -13,65 +13,103 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_hud")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="RootLayout" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/separation = 6
 
-[node name="RootLayout" type="HBoxContainer" parent="MarginContainer"]
+[node name="MainArea" type="Control" parent="RootLayout"]
 layout_mode = 2
-
-[node name="MainFeedPanel" parent="MarginContainer/RootLayout" instance=ExtResource("1_panel")]
 size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
 
-[node name="SidePanelContainer" type="VBoxContainer" parent="MarginContainer/RootLayout"]
-layout_mode = 2
-size_flags_horizontal = 1
-custom_minimum_size = Vector2(320, 400)
-
-[node name="FrontPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
-[node name="RearPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
-[node name="LeftPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
-[node name="RightPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
-
-[node name="Speedometer" parent="MarginContainer" instance=ExtResource("2_speed")]
+[node name="MainFeedPanel" parent="RootLayout/MainArea" instance=ExtResource("1_panel")]
 layout_mode = 1
-anchors_preset = 2
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -180.0
-offset_top = 12.0
-offset_right = -12.0
-offset_bottom = 48.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_minimum_size = Vector2(0, 0)
+mouse_filter = 2
 
-[node name="StatusLabel" type="Label" parent="MarginContainer"]
+[node name="MinimapPanel" parent="RootLayout/MainArea" instance=ExtResource("1_panel")]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 228.0
+offset_bottom = 158.0
+
+[node name="FpsPanel" type="PanelContainer" parent="RootLayout/MainArea"]
 layout_mode = 1
 anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 420.0
+offset_left = -128.0
+offset_top = 8.0
+offset_right = -8.0
 offset_bottom = 38.0
-text = "Layout: Driver + 3 PiP"
 
-[node name="HelpText" type="Label" parent="MarginContainer"]
+[node name="FpsLabel" type="Label" parent="RootLayout/MainArea/FpsPanel"]
+layout_mode = 2
+horizontal_alignment = 2
+text = "FPS: 0"
+
+[node name="InfoBar" type="PanelContainer" parent="RootLayout/MainArea"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = -36.0
-offset_right = 600.0
-offset_bottom = -12.0
-text = "Tab: Toggle layout | R: Reset | F3: Debug | Esc: Quit"
+offset_left = 8.0
+offset_top = -56.0
+offset_right = -8.0
+offset_bottom = -8.0
+
+[node name="InfoContent" type="HBoxContainer" parent="RootLayout/MainArea/InfoBar"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Speedometer" parent="RootLayout/MainArea/InfoBar/InfoContent" instance=ExtResource("2_speed")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="StatusLabel" type="Label" parent="RootLayout/MainArea/InfoBar/InfoContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Camera: Front"
+
+[node name="HelpText" type="Label" parent="RootLayout/MainArea/InfoBar/InfoContent"]
+layout_mode = 2
+text = "Click panel to switch  |  Tab: cycle  |  Scroll on map: zoom"
+
+[node name="SidePanelContainer" type="VBoxContainer" parent="RootLayout"]
+layout_mode = 2
+custom_minimum_size = Vector2(260, 0)
+size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[node name="FrontPanel" parent="RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RearPanel" parent="RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftPanel" parent="RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RightPanel" parent="RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="PauseOverlay" type="ColorRect" parent="."]
 visible = false

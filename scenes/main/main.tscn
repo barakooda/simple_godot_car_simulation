@@ -1,24 +1,25 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://bjsw5xf4yjb1f"]
 
 [ext_resource type="PackedScene" path="res://scenes/world/city_block.tscn" id="1_city"]
-[ext_resource type="PackedScene" path="res://scenes/vehicles/player_car.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://d307dyve4fdbb" path="res://scenes/vehicles/player_car.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/vehicles/traffic_manager.tscn" id="3_traffic"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4_hud"]
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" unique_id=609314313]
 
-[node name="WorldRoot" type="Node3D" parent="."]
+[node name="WorldRoot" type="Node3D" parent="." unique_id=593310042]
 
-[node name="CityBlock" parent="WorldRoot" instance=ExtResource("1_city")]
+[node name="CityBlock" parent="WorldRoot" unique_id=474127112 instance=ExtResource("1_city")]
 
-[node name="VehicleRoot" type="Node3D" parent="."]
+[node name="VehicleRoot" type="Node3D" parent="." unique_id=52635286]
 
-[node name="PlayerCar" parent="VehicleRoot" instance=ExtResource("2_player")]
+[node name="PlayerCar" parent="VehicleRoot" unique_id=310458895 instance=ExtResource("2_player")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -30, 7.0342855, 0)
 
-[node name="TrafficManager" parent="VehicleRoot" instance=ExtResource("3_traffic")]
+[node name="TrafficManager" parent="VehicleRoot" unique_id=514308906 instance=ExtResource("3_traffic")]
 
-[node name="UIRoot" type="CanvasLayer" parent="."]
+[node name="UIRoot" type="CanvasLayer" parent="." unique_id=2037624414]
 
-[node name="HUD" parent="UIRoot" instance=ExtResource("4_hud")]
+[node name="HUD" parent="UIRoot" unique_id=872330115 instance=ExtResource("4_hud")]
 
-[node name="DebugRoot" type="CanvasLayer" parent="."]
+[node name="DebugRoot" type="CanvasLayer" parent="." unique_id=1177099287]

@@ -6,25 +6,29 @@
 script = ExtResource("1_script")
 
 [node name="FrontCameraAnchor" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -1.8)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.75, 1.55)
 [node name="FrontCamera" type="Camera3D" parent="FrontCameraAnchor"]
 current = false
 
 [node name="RearCameraAnchor" type="Marker3D" parent="."]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 1.4, 1.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -1.65)
 [node name="RearCamera" type="Camera3D" parent="RearCameraAnchor"]
 current = false
 
 [node name="LeftCameraAnchor" type="Marker3D" parent="."]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.9, 1.3, -0.2)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.98, 0.72, 0)
 [node name="LeftCamera" type="Camera3D" parent="LeftCameraAnchor"]
 current = false
 
 [node name="RightCameraAnchor" type="Marker3D" parent="."]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.9, 1.3, -0.2)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.98, 0.72, 0)
 [node name="RightCamera" type="Camera3D" parent="RightCameraAnchor"]
 current = false
 
 [node name="OptionalMainDriverCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.5)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.78, 0.48)
 current = true
+
+[node name="OptionalAerialHelperCamera" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 35, 0)
+current = false

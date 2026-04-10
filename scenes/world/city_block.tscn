@@ -1,20 +1,353 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/world/tree.tscn" id="1_tree"]
+[ext_resource type="PackedScene" path="res://scenes/world/intersection_4way.tscn" id="2_intersection"]
+[ext_resource type="PackedScene" path="res://scenes/world/road_segment_straight.tscn" id="3_road"]
+[ext_resource type="PackedScene" path="res://scenes/world/building_block_a.tscn" id="4_building"]
+[ext_resource type="PackedScene" path="res://scenes/world/sidewalk_block.tscn" id="5_sidewalk"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ground"]
 size = Vector3(400, 1, 400)
 
+[sub_resource type="StandardMaterial3D" id="Material_grass"]
+albedo_color = Color(0.2, 0.6, 0.15, 1)
+roughness = 0.8
+
 [sub_resource type="BoxShape3D" id="BoxShape_ground"]
 size = Vector3(400, 1, 400)
+
+[sub_resource type="BoxShape3D" id="BoxShape_border_ns"]
+size = Vector3(400, 8, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape_border_ew"]
+size = Vector3(2, 8, 400)
+
+[sub_resource type="BoxMesh" id="BoxMesh_npc_guide_ew"]
+size = Vector3(120, 0.04, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_npc_guide_ns"]
+size = Vector3(0.5, 0.04, 120)
+
+[sub_resource type="StandardMaterial3D" id="Material_npc_guide"]
+albedo_color = Color(0.95, 0.8, 0.2, 1)
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.45, 0.35, 0.08, 1)
 
 [node name="CityBlock" type="Node3D"]
 
 [node name="Ground" type="StaticBody3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+[node name="GroundMesh" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("BoxMesh_ground")
+material_override = SubResource("Material_grass")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+[node name="GroundCollision" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape_ground")
 
-[node name="RoadLoopHint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+[node name="BorderWalls" type="StaticBody3D" parent="."]
+
+[node name="NorthWallCollision" type="CollisionShape3D" parent="BorderWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, -199)
+shape = SubResource("BoxShape_border_ns")
+
+[node name="SouthWallCollision" type="CollisionShape3D" parent="BorderWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 199)
+shape = SubResource("BoxShape_border_ns")
+
+[node name="EastWallCollision" type="CollisionShape3D" parent="BorderWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 199, 4.5, 0)
+shape = SubResource("BoxShape_border_ew")
+
+[node name="WestWallCollision" type="CollisionShape3D" parent="BorderWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -199, 4.5, 0)
+shape = SubResource("BoxShape_border_ew")
+
+; ── 3×3 Intersection Grid ────────────────────────────────
+; Intersection mesh: 16×16m. Grid positions: -60, 0, +60
+; Spacing 60m → gap between edges: 60-8-8 = 44m
+; Road mesh 20×0.1×6, scale 2.2× = 44m to fill gap exactly
+; EW road: Transform3D(2.2,0,0, 0,1,0, 0,0,1, X, 0.55, Z)
+; NS road: Transform3D(0,0,-2.2, 0,1,0, 1,0,0, X, 0.55, Z)
+
+[node name="Roads" type="Node3D" parent="."]
+
+; ── 9 Intersections ──
+[node name="X_Center" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+
+[node name="X_N" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -60)
+
+[node name="X_S" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 60)
+
+[node name="X_E" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.55, 0)
+
+[node name="X_W" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0.55, 0)
+
+[node name="X_NE" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.55, -60)
+
+[node name="X_NW" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0.55, -60)
+
+[node name="X_SE" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.55, 60)
+
+[node name="X_SW" parent="Roads" instance=ExtResource("2_intersection")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0.55, 60)
+
+; ── 12 Road Segments ──
+; Each centered at midpoint between two intersections
+; Length 44m (scale 2.2) fills gap edge-to-edge
+
+; Middle row EW (Z=0): Center↔East, Center↔West
+[node name="R_C_E" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.55, 0)
+
+[node name="R_C_W" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, 0)
+
+; North row EW (Z=-60): NW↔N, N↔NE
+[node name="R_NW_N" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, -60)
+
+[node name="R_N_NE" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.55, -60)
+
+; South row EW (Z=60): SW↔S, S↔SE
+[node name="R_SW_S" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, 60)
+
+[node name="R_S_SE" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.55, 60)
+
+; Left column NS (X=-60): NW↔W, W↔SW
+[node name="R_NW_W" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(0, 0, -2.2, 0, 1, 0, 1, 0, 0, -60, 0.55, -30)
+
+[node name="R_W_SW" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(0, 0, -2.2, 0, 1, 0, 1, 0, 0, -60, 0.55, 30)
+
+; Center column NS (X=0): N↔Center, Center↔S
+[node name="R_N_C" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(0, 0, -2.2, 0, 1, 0, 1, 0, 0, 0, 0.55, -30)
+
+[node name="R_C_S" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(0, 0, -2.2, 0, 1, 0, 1, 0, 0, 0, 0.55, 30)
+
+; Right column NS (X=60): NE↔E, E↔SE
+[node name="R_NE_E" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(0, 0, -2.2, 0, 1, 0, 1, 0, 0, 60, 0.55, -30)
+
+[node name="R_E_SE" parent="Roads" instance=ExtResource("3_road")]
+transform = Transform3D(0, 0, -2.2, 0, 1, 0, 1, 0, 0, 60, 0.55, 30)
+
+; ── Buildings ─────────────────────────────────────────────
+; 4 city blocks between roads, centered at (±30, ±30)
+; Building mesh 10×24×10, ground top Y=0.5, center Y=12.5
+
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="B_NW" parent="Buildings" instance=ExtResource("4_building")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 12.5, -30)
+
+[node name="B_NE" parent="Buildings" instance=ExtResource("4_building")]
+transform = Transform3D(1.2, 0, 0, 0, 1.1, 0, 0, 0, 1.2, 30, 13.7, -30)
+
+[node name="B_SW" parent="Buildings" instance=ExtResource("4_building")]
+transform = Transform3D(0.9, 0, 0, 0, 0.8, 0, 0, 0, 0.9, -30, 10.1, 30)
+
+[node name="B_SE" parent="Buildings" instance=ExtResource("4_building")]
+transform = Transform3D(1.1, 0, 0, 0, 1.15, 0, 0, 0, 1.1, 30, 14.3, 30)
+
+[node name="B_OuterNW" parent="Buildings" instance=ExtResource("4_building")]
+transform = Transform3D(1, 0, 0, 0, 0.6, 0, 0, 0, 1, -100, 7.7, -90)
+
+[node name="B_OuterSE" parent="Buildings" instance=ExtResource("4_building")]
+transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 1, 100, 8.9, 90)
+
+; ── Sidewalks ─────────────────────────────────────────────
+; Sidewalk mesh 8×0.25×2; road is 6m wide → offset ±4 perpendicular
+; Road gap 44m → sidewalk scale = 44/8 = 5.5
+; Y=0.625 puts top at 0.75 (small curb above road top 0.60)
+
+[node name="Sidewalks" type="Node3D" parent="."]
+
+; EW road R_C_E (X=30, Z=0) — north & south sides
+[node name="SW_CE_N" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, -4)
+
+[node name="SW_CE_S" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, 4)
+
+; EW road R_C_W (X=-30, Z=0)
+[node name="SW_CW_N" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, -4)
+
+[node name="SW_CW_S" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, 4)
+
+; EW road R_NW_N (X=-30, Z=-60)
+[node name="SW_NWN_N" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, -64)
+
+[node name="SW_NWN_S" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, -56)
+
+; EW road R_N_NE (X=30, Z=-60)
+[node name="SW_NNE_N" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, -64)
+
+[node name="SW_NNE_S" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, -56)
+
+; EW road R_SW_S (X=-30, Z=60)
+[node name="SW_SWS_N" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, 56)
+
+[node name="SW_SWS_S" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, 64)
+
+; EW road R_S_SE (X=30, Z=60)
+[node name="SW_SSE_N" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, 56)
+
+[node name="SW_SSE_S" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, 64)
+
+; NS road R_NW_W (X=-60, Z=-30) — east & west sides
+[node name="SW_NWW_E" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, -56, 0.625, -30)
+
+[node name="SW_NWW_W" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, -64, 0.625, -30)
+
+; NS road R_W_SW (X=-60, Z=30)
+[node name="SW_WSW_E" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, -56, 0.625, 30)
+
+[node name="SW_WSW_W" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, -64, 0.625, 30)
+
+; NS road R_N_C (X=0, Z=-30)
+[node name="SW_NC_E" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, 4, 0.625, -30)
+
+[node name="SW_NC_W" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, -4, 0.625, -30)
+
+; NS road R_C_S (X=0, Z=30)
+[node name="SW_CS_E" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, 4, 0.625, 30)
+
+[node name="SW_CS_W" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, -4, 0.625, 30)
+
+; NS road R_NE_E (X=60, Z=-30)
+[node name="SW_NEE_E" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, 64, 0.625, -30)
+
+[node name="SW_NEE_W" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, 56, 0.625, -30)
+
+; NS road R_E_SE (X=60, Z=30)
+[node name="SW_ESE_E" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, 64, 0.625, 30)
+
+[node name="SW_ESE_W" parent="Sidewalks" instance=ExtResource("5_sidewalk")]
+transform = Transform3D(0, 0, -5.5, 0, 1, 0, 1, 0, 0, 56, 0.625, 30)
+
+; ── NPC Traffic Path ──────────────────────────────────────
+; Clockwise loop on the outer ring of the 3×3 grid
+
+[node name="NpcPath" type="Node3D" parent="."]
+
+; Yellow guide strips on outer roads
+[node name="GuideNorth" type="MeshInstance3D" parent="NpcPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, -60)
+mesh = SubResource("BoxMesh_npc_guide_ew")
+material_override = SubResource("Material_npc_guide")
+
+[node name="GuideSouth" type="MeshInstance3D" parent="NpcPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 60)
+mesh = SubResource("BoxMesh_npc_guide_ew")
+material_override = SubResource("Material_npc_guide")
+
+[node name="GuideEast" type="MeshInstance3D" parent="NpcPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.58, 0)
+mesh = SubResource("BoxMesh_npc_guide_ns")
+material_override = SubResource("Material_npc_guide")
+
+[node name="GuideWest" type="MeshInstance3D" parent="NpcPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0.58, 0)
+mesh = SubResource("BoxMesh_npc_guide_ns")
+material_override = SubResource("Material_npc_guide")
+
+; Waypoints — clockwise on outer ring
+[node name="P01" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.0, -60)
+
+[node name="P02" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, -60)
+
+[node name="P03" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.0, -60)
+
+[node name="P04" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.0, 0)
+
+[node name="P05" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.0, 60)
+
+[node name="P06" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 60)
+
+[node name="P07" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.0, 60)
+
+[node name="P08" type="Marker3D" parent="NpcPath" groups=["npc_waypoint"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 1.0, 0)
+
+; NPC spawn points on outer roads
+[node name="NpcSpawns" type="Node3D" parent="."]
+
+[node name="S01" type="Marker3D" parent="NpcSpawns" groups=["npc_spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 1.0, -60)
+
+[node name="S02" type="Marker3D" parent="NpcSpawns" groups=["npc_spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.0, 30)
+
+[node name="S03" type="Marker3D" parent="NpcSpawns" groups=["npc_spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 1.0, 60)
+
+; ── Trees ─────────────────────────────────────────────────
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="Tree1" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0.5, -30)
+
+[node name="Tree2" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.5, -30)
+
+[node name="Tree3" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0.5, 30)
+
+[node name="Tree4" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.5, 30)
+
+[node name="Tree5" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0.5, -100)
+
+[node name="Tree6" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.5, 100)
+
+[node name="Tree7" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90, 0.5, 50)
+
+[node name="Tree8" parent="Trees" instance=ExtResource("1_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0.5, -50)

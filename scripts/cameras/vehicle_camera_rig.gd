@@ -1,32 +1,102 @@
 extends Node3D
 
-@export var front_fov: float = 75.0
+@export var front_fov: float = 70.0
 @export var rear_fov: float = 70.0
-@export var side_fov: float = 65.0
+@export var side_fov: float = 70.0
+@export var aerial_fov: float = 55.0
+@export var aerial_height: float = 35.0
+@export var aerial_min_height: float = 10.0
+@export var aerial_max_height: float = 80.0
 
 var _feeds: Dictionary = {}
+var _cameras: Dictionary = {}
+var _source_cameras: Dictionary = {}
+var _feed_cameras: Dictionary = {}
 
 func _ready() -> void:
-    _setup_feed("front", "FrontCamera", front_fov)
-    _setup_feed("rear", "RearCamera", rear_fov)
-    _setup_feed("left", "LeftCamera", side_fov)
-    _setup_feed("right", "RightCamera", side_fov)
+	_setup_feed("front", "FrontCamera", front_fov)
+	_setup_feed("rear", "RearCamera", rear_fov)
+	_setup_feed("left", "LeftCamera", side_fov)
+	_setup_feed("right", "RightCamera", side_fov)
+	_setup_feed("aerial", "OptionalAerialHelperCamera", aerial_fov)
+	set_aerial_height(aerial_height)
+	set_process(true)
+
+func _process(_delta: float) -> void:
+	for feed_name in _feed_cameras.keys():
+		_sync_feed_camera_transform(feed_name)
 
 func _setup_feed(key: String, camera_name: String, fov: float) -> void:
-    var camera := find_child(camera_name, true, false) as Camera3D
-    if camera == null:
-        return
-    camera.fov = fov
-    var viewport := SubViewport.new()
-    viewport.name = "%sViewport" % key.capitalize()
-    viewport.disable_3d = false
-    viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-    viewport.msaa_3d = Viewport.MSAA_DISABLED
-    viewport.size = Vector2i(640, 360)
-    add_child(viewport)
-    camera.reparent(viewport)
-    viewport.world_3d = get_viewport().world_3d
-    _feeds[key] = viewport.get_texture()
+	var source_camera := find_child(camera_name, true, false) as Camera3D
+	if source_camera == null:
+		return
+	source_camera.current = false
+	_source_cameras[key] = source_camera
+
+	var viewport := SubViewport.new()
+	viewport.name = "%sViewport" % key.capitalize()
+	viewport.disable_3d = false
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	viewport.msaa_3d = Viewport.MSAA_DISABLED
+	viewport.size = Vector2i(640, 360)
+
+	var feed_camera := Camera3D.new()
+	feed_camera.name = "%sFeedCamera" % key.capitalize()
+	feed_camera.fov = fov
+	feed_camera.current = true
+	viewport.add_child(feed_camera)
+
+	add_child(viewport)
+	viewport.world_3d = get_viewport().world_3d
+
+	_feed_cameras[key] = feed_camera
+	_cameras[key] = feed_camera
+	_sync_feed_camera_transform(key)
+	_feeds[key] = viewport.get_texture()
+
+func _sync_feed_camera_transform(feed_name: String) -> void:
+	var source_camera := _source_cameras.get(feed_name, null) as Camera3D
+	var feed_camera := _feed_cameras.get(feed_name, null) as Camera3D
+	if source_camera == null or feed_camera == null:
+		return
+	feed_camera.global_transform = source_camera.global_transform
 
 func get_feed(feed_name: String) -> Texture2D:
-    return _feeds.get(feed_name, null)
+	return _feeds.get(feed_name, null)
+
+func get_feed_fov(feed_name: String) -> float:
+	var camera := _cameras.get(feed_name, null) as Camera3D
+	if camera == null:
+		return 0.0
+	return camera.fov
+
+func set_feed_fov(feed_name: String, fov: float) -> void:
+	var camera := _cameras.get(feed_name, null) as Camera3D
+	if camera == null:
+		return
+	var clamped_fov: float = clamp(fov, 35.0, 120.0)
+	camera.fov = clamped_fov
+	match feed_name:
+		"front":
+			front_fov = clamped_fov
+		"rear":
+			rear_fov = clamped_fov
+		"left", "right":
+			side_fov = clamped_fov
+		"aerial":
+			aerial_fov = clamped_fov
+
+func has_feed(feed_name: String) -> bool:
+	return _feeds.has(feed_name)
+
+func set_aerial_height(height: float) -> void:
+	aerial_height = clampf(height, aerial_min_height, aerial_max_height)
+	var aerial_source := _source_cameras.get("aerial", null) as Camera3D
+	if aerial_source == null:
+		return
+	var transform_copy := aerial_source.transform
+	transform_copy.origin.y = aerial_height
+	aerial_source.transform = transform_copy
+
+func get_aerial_height() -> float:
+	return aerial_height

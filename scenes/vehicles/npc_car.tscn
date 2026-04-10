@@ -5,12 +5,18 @@
 [sub_resource type="BoxMesh" id="BoxMesh_npc"]
 size = Vector3(1.8, 0.9, 3.8)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_npc_red"]
+albedo_color = Color(0.83, 0.08, 0.1, 1)
+roughness = 0.35
+metallic = 0.05
+
 [node name="NPCCar" type="Node3D"]
 script = ExtResource("1_script")
 
 [node name="VisualRoot" type="Node3D" parent="."]
 [node name="BodyMesh" type="MeshInstance3D" parent="VisualRoot"]
 mesh = SubResource("BoxMesh_npc")
+material_override = SubResource("StandardMaterial3D_npc_red")
 
 [node name="FrontSensor" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -6)

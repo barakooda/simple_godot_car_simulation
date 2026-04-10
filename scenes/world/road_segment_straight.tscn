@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [sub_resource type="BoxMesh" id="BoxMesh_road"]
 size = Vector3(20, 0.1, 6)
 
+[sub_resource type="StandardMaterial3D" id="Material_asphalt"]
+albedo_color = Color(0.15, 0.15, 0.18, 1)
+roughness = 0.6
+
 [node name="RoadSegmentStraight" type="Node3D"]
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_road")
+material_override = SubResource("Material_asphalt")

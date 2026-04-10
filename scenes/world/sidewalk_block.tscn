@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [sub_resource type="BoxMesh" id="BoxMesh_sidewalk"]
 size = Vector3(8, 0.25, 2)
 
+[sub_resource type="StandardMaterial3D" id="Material_concrete"]
+albedo_color = Color(0.7, 0.7, 0.75, 1)
+roughness = 0.5
+
 [node name="SidewalkBlock" type="Node3D"]
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_sidewalk")
+material_override = SubResource("Material_concrete")

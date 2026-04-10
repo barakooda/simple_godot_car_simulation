@@ -1,65 +1,87 @@
 extends RigidBody3D
 
-@export var engine_force: float = 9000.0
-@export var reverse_force: float = 4200.0
-@export var brake_force: float = 13000.0
-@export var max_speed: float = 28.0
-@export var steer_rate: float = 2.5
-@export var max_steer_angle: float = 0.5
-@export var lateral_grip: float = 6.0
-@export var angular_stability: float = 3.0
-@export var linear_drag: float = 0.04
+@export var engine_force: float = 22000.0
+@export var reverse_force: float = 9000.0
+@export var brake_force: float = 17000.0
+@export var max_speed: float = 22.2
+@export var steer_rate: float = 2.0
+@export var max_steer_angle: float = 0.38
+@export var lateral_grip: float = 8.5
+@export var angular_stability: float = 4.2
+@export var linear_drag: float = 0.0015
 @export var reset_height_threshold: float = -6.0
 
 var _input: VehicleInput = VehicleInput.new()
 var _state: VehicleState = VehicleState.new()
+var _steering: float = 0.0
 
 func _ready() -> void:
 	add_to_group("player_car")
 
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 	_input.sample()
-	_apply_drive_forces(state)
-	_apply_grip_and_stability(state)
+	var dt: float = state.step
+	var forward: Vector3 = global_transform.basis.z
+	var speed: float = state.linear_velocity.dot(forward)
+	_state.speed_mps = state.linear_velocity.length()
+	
+	# ── Throttle / brake ──────────────────────────────────
+	if _input.throttle > 0.0:
+		if speed < -0.2:
+			var forward_brake_delta: float = brake_force / mass * _input.throttle * dt
+			state.linear_velocity = state.linear_velocity.move_toward(Vector3.ZERO, forward_brake_delta)
+		else:
+			var accel_vec: Vector3 = forward * (_input.throttle * engine_force / mass * dt)
+			state.linear_velocity += accel_vec
+	elif _input.throttle < 0.0:
+		if speed > 0.2:
+			var reverse_brake_delta: float = brake_force / mass * absf(_input.throttle) * dt
+			state.linear_velocity = state.linear_velocity.move_toward(Vector3.ZERO, reverse_brake_delta)
+		else:
+			var accel_vec: Vector3 = forward * (_input.throttle * reverse_force / mass * dt)
+			state.linear_velocity += accel_vec
+
+	if _input.brake > 0.0:
+		var brake_delta: float = brake_force / mass * _input.brake * dt
+		state.linear_velocity = state.linear_velocity.move_toward(Vector3.ZERO, brake_delta)
+
+	if absf(speed) > max_speed:
+		state.linear_velocity -= forward * (speed - signf(speed) * max_speed)
+
+	# ── Drag ──────────────────────────────────────────────
+	state.linear_velocity *= (1.0 - linear_drag)
+
+	# ── Steering ──────────────────────────────────────────
+	var steer_scale: float = clampf(1.0 - (_state.speed_mps / max_speed) * 0.72, 0.12, 1.0)
+	_steering = move_toward(_steering, _input.steer * max_steer_angle * steer_scale, steer_rate * dt)
+	var speed_factor: float = clampf(speed / 6.0, -1.0, 1.0)
+	var target_yaw: float = -_steering * 2.2 * speed_factor
+	state.angular_velocity.y = lerpf(state.angular_velocity.y, target_yaw, clampf(5.0 * dt, 0.0, 1.0))
+
+	# ── Lateral grip ──────────────────────────────────────
+	var local_vel: Vector3 = global_transform.basis.inverse() * state.linear_velocity
+	local_vel.x = lerpf(local_vel.x, 0.0, clampf(lateral_grip * dt, 0.0, 1.0))
+	state.linear_velocity = global_transform.basis * local_vel
+
+	# ── Absolute speed cap (m/s) ─────────────────────────
+	var velocity_len: float = state.linear_velocity.length()
+	if velocity_len > max_speed:
+		state.linear_velocity = state.linear_velocity / velocity_len * max_speed
+
+	# ── Angular stability (damp roll/pitch only) ──────────
+	state.angular_velocity.x = lerpf(state.angular_velocity.x, 0.0, clampf(angular_stability * dt, 0.0, 1.0))
+	state.angular_velocity.z = lerpf(state.angular_velocity.z, 0.0, clampf(angular_stability * dt, 0.0, 1.0))
+
+	# ── Reset ─────────────────────────────────────────────
 	if global_position.y < reset_height_threshold or Input.is_action_just_pressed("reset_vehicle"):
 		reset_to_spawn()
 	if Input.is_action_just_pressed("quit"):
 		get_tree().quit()
 
-func _apply_drive_forces(state: PhysicsDirectBodyState3D) -> void:
-	var forward := -global_transform.basis.z
-	var speed := linear_velocity.dot(forward)
-	_state.speed_mps = linear_velocity.length()
-
-	var throttle: float = _input.throttle
-	if throttle > 0.0:
-		apply_central_force(forward * throttle * engine_force)
-	elif throttle < 0.0:
-		apply_central_force(forward * throttle * reverse_force)
-
-	if _input.brake > 0.0 and linear_velocity.length() > 0.0:
-		var braking: Vector3 = linear_velocity.normalized() * min(linear_velocity.length(), brake_force * _input.brake * state.step)
-		linear_velocity -= braking
-
-	if speed > max_speed:
-		linear_velocity -= forward * (speed - max_speed)
-
-	var steer_scale: float = clamp(1.0 - (_state.speed_mps / max_speed) * 0.65, 0.25, 1.0)
-	_state.steering_amount = move_toward(_state.steering_amount, _input.steer * max_steer_angle * steer_scale, steer_rate * state.step)
-	apply_torque(Vector3.UP * -_state.steering_amount * 1800.0)
-
-	linear_velocity *= (1.0 - linear_drag)
-
-func _apply_grip_and_stability(state: PhysicsDirectBodyState3D) -> void:
-	var local_velocity := global_transform.basis.inverse() * linear_velocity
-	local_velocity.x = lerp(local_velocity.x, 0.0, clamp(lateral_grip * state.step, 0.0, 1.0))
-	linear_velocity = global_transform.basis * local_velocity
-	angular_velocity = angular_velocity.lerp(Vector3.ZERO, clamp(angular_stability * state.step, 0.0, 1.0))
-
 func reset_to_spawn() -> void:
-	var respawn_anchor := get_node_or_null("RespawnAnchor") as Marker3D
-	if respawn_anchor:
-		global_transform = respawn_anchor.global_transform
+	var anchor := get_node_or_null("RespawnAnchor") as Marker3D
+	if anchor:
+		global_transform = anchor.global_transform
 	else:
 		global_position = Vector3(0.0, 1.0, 0.0)
 		rotation = Vector3.ZERO
