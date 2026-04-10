@@ -1,18 +1,21 @@
 extends Control
 
 const FEED_IDS: PackedStringArray = ["front", "rear", "left", "right"]
+const MAIN_FEED_IDS: PackedStringArray = ["front", "rear", "left", "right", "driver"]
 const MINIMAP_ZOOM_STEP: float = 2.0
 
-var _current_main_feed: String = "front"
+var _current_main_feed: String = "driver"
 var _current_feed_index: int = 0
 var _player: RigidBody3D = null
 var _camera_rig: Node = null
+var _driver_look_enabled: bool = false
 
 @onready var _main_panel: Node = $RootLayout/MainArea/MainFeedPanel
 @onready var _minimap_panel: Node = $RootLayout/MainArea/MinimapPanel
 @onready var _fps_label: Label = $RootLayout/MainArea/FpsPanel/FpsLabel
 @onready var _status_label: Label = $RootLayout/MainArea/InfoBar/InfoContent/StatusLabel
 @onready var _speedometer: Label = $RootLayout/MainArea/InfoBar/InfoContent/Speedometer
+@onready var _driver_view_button: Button = $RootLayout/MainArea/InfoBar/InfoContent/DriverViewButton
 
 @onready var _front_panel: Node = $RootLayout/SidePanelContainer/FrontPanel
 @onready var _rear_panel: Node = $RootLayout/SidePanelContainer/RearPanel
@@ -24,6 +27,7 @@ func _ready() -> void:
 	_setup_panel(_rear_panel, "rear", "Rear")
 	_setup_panel(_left_panel, "left", "Left")
 	_setup_panel(_right_panel, "right", "Right")
+	_driver_view_button.pressed.connect(_on_driver_view_pressed)
 	if _minimap_panel is Control:
 		(_minimap_panel as Control).gui_input.connect(_on_minimap_gui_input)
 
@@ -36,6 +40,7 @@ func _ready() -> void:
 		_minimap_panel.set_fov_controls_visible(false)
 
 	_resolve_scene_references()
+	_switch_main_feed("driver")
 	_refresh_camera_textures()
 	_refresh_fov_controls()
 	_update_selection_highlight()
@@ -50,9 +55,32 @@ func _process(_delta: float) -> void:
 	if _player:
 		_update_speed()
 	_update_fps()
-	if Input.is_action_just_pressed("toggle_camera_layout"):
-		_current_feed_index = (_current_feed_index + 1) % FEED_IDS.size()
-		_switch_main_feed(FEED_IDS[_current_feed_index])
+
+func _input(event: InputEvent) -> void:
+	var mouse_button := event as InputEventMouseButton
+	if mouse_button and mouse_button.pressed and mouse_button.button_index == MOUSE_BUTTON_LEFT and _current_main_feed == "driver":
+		var main_control := _main_panel as Control
+		if main_control and main_control.get_global_rect().has_point(mouse_button.global_position):
+			_set_driver_look_enabled(not _driver_look_enabled)
+			get_viewport().set_input_as_handled()
+			return
+
+	var mouse_motion := event as InputEventMouseMotion
+	if mouse_motion and _current_main_feed == "driver" and _driver_look_enabled and _camera_rig and _camera_rig.has_method("adjust_driver_look"):
+		_camera_rig.adjust_driver_look(mouse_motion.relative.x, mouse_motion.relative.y)
+
+	var key_event := event as InputEventKey
+	if key_event and key_event.pressed and not key_event.echo and key_event.keycode == KEY_TAB:
+		_cycle_main_feed()
+		get_viewport().set_input_as_handled()
+		return
+	if event.is_action_pressed("toggle_camera_layout"):
+		_cycle_main_feed()
+		get_viewport().set_input_as_handled()
+
+func _cycle_main_feed() -> void:
+	_current_feed_index = (_current_feed_index + 1) % FEED_IDS.size()
+	_switch_main_feed(FEED_IDS[_current_feed_index])
 
 func _setup_panel(panel: Node, feed_id: String, label_text: String) -> void:
 	_set_panel_label(panel, label_text)
@@ -94,14 +122,26 @@ func _refresh_fov_controls() -> void:
 	_set_panel_fov(_right_panel, _camera_rig.get_feed_fov("right"))
 
 func _switch_main_feed(feed_id: String) -> void:
-	if not FEED_IDS.has(feed_id):
+	if not MAIN_FEED_IDS.has(feed_id):
 		return
+	if feed_id != "driver" and _driver_look_enabled:
+		_set_driver_look_enabled(false)
 	_current_main_feed = feed_id
-	_current_feed_index = FEED_IDS.find(feed_id)
+	if FEED_IDS.has(feed_id):
+		_current_feed_index = FEED_IDS.find(feed_id)
 	if _camera_rig and _camera_rig.has_method("get_feed"):
 		_set_panel_texture(_main_panel, _camera_rig.get_feed(_current_main_feed))
 	_update_selection_highlight()
 	_update_status_text()
+
+func _on_driver_view_pressed() -> void:
+	_switch_main_feed("driver")
+
+func _set_driver_look_enabled(is_enabled: bool) -> void:
+	_driver_look_enabled = is_enabled
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED if _driver_look_enabled else Input.MOUSE_MODE_VISIBLE)
+	if not _driver_look_enabled and _camera_rig and _camera_rig.has_method("reset_driver_look"):
+		_camera_rig.reset_driver_look()
 
 func _on_panel_fov_changed(feed_id: String, fov: float) -> void:
 	if _camera_rig == null or not _camera_rig.has_method("set_feed_fov"):

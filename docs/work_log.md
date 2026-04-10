@@ -1,6 +1,6 @@
 # Car Simulator Work Log
 
-Last updated: 2026-04-10 (physics fix + road rebuild)
+Last updated: 2026-04-10 (driver view click-toggle + reset)
 Workspace: /home/barak/car_simulator
 
 ## Project Goal Snapshot
@@ -354,3 +354,12 @@ This section records only items that were implemented and verified in-session.
 
 ### HUD diagnostics
 - Added live FPS overlay in the main window (top-right), updated from engine FPS each frame.
+
+### Driver view interaction polish
+- Added dedicated Driver View main feed option and button routing to switch main view to driver feed.
+- Main camera now starts on Driver View by default at scene startup.
+- Driver mouse-look is now click-toggle based while Driver View is active:
+  - first left-click inside the main feed enables look control and captures the mouse,
+  - second left-click disables look control and releases the mouse.
+- Driver look input (mouse motion) is ignored unless look control is enabled.
+- When look control is toggled off, driver camera orientation resets to default forward alignment by clearing yaw/pitch offsets back to zero.

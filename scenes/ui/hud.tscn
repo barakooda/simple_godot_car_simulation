@@ -85,9 +85,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Camera: Front"
 
+[node name="DriverViewButton" type="Button" parent="RootLayout/MainArea/InfoBar/InfoContent"]
+layout_mode = 2
+focus_mode = 0
+text = "Driver View"
+
 [node name="HelpText" type="Label" parent="RootLayout/MainArea/InfoBar/InfoContent"]
 layout_mode = 2
-text = "Click panel to switch  |  Tab: cycle  |  Scroll on map: zoom"
+text = "Click panel to switch | Tab: cycle | Driver View + mouse look | Scroll map: zoom"
 
 [node name="SidePanelContainer" type="VBoxContainer" parent="RootLayout"]
 layout_mode = 2
