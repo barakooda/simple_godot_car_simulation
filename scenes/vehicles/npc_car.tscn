@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/vehicles/npc_car_controller.gd" id="1_script"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_npc"]
+size = Vector3(1.8, 0.9, 3.8)
+
+[node name="NPCCar" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+[node name="BodyMesh" type="MeshInstance3D" parent="VisualRoot"]
+mesh = SubResource("BoxMesh_npc")
+
+[node name="FrontSensor" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -6)
+[node name="FrontLeftSensor" type="RayCast3D" parent="."]
+target_position = Vector3(-0.8, 0, -5)
+[node name="FrontRightSensor" type="RayCast3D" parent="."]
+target_position = Vector3(0.8, 0, -5)
+
+[node name="RouteAnchor" type="Marker3D" parent="."]
+[node name="DebugMarker" type="Marker3D" parent="."]

@@ -1,0 +1,82 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/camera_panel.tscn" id="1_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/speedometer.tscn" id="2_speed"]
+[ext_resource type="Script" path="res://scripts/ui/hud_controller.gd" id="3_hud"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_hud")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="RootLayout" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MainFeedPanel" parent="MarginContainer/RootLayout" instance=ExtResource("1_panel")]
+size_flags_horizontal = 3
+
+[node name="SidePanelContainer" type="VBoxContainer" parent="MarginContainer/RootLayout"]
+layout_mode = 2
+size_flags_horizontal = 1
+custom_minimum_size = Vector2(320, 400)
+
+[node name="FrontPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+[node name="RearPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+[node name="LeftPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+[node name="RightPanel" parent="MarginContainer/RootLayout/SidePanelContainer" instance=ExtResource("1_panel")]
+
+[node name="Speedometer" parent="MarginContainer" instance=ExtResource("2_speed")]
+layout_mode = 1
+anchors_preset = 2
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = 48.0
+
+[node name="StatusLabel" type="Label" parent="MarginContainer"]
+layout_mode = 1
+anchors_preset = 1
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 420.0
+offset_bottom = 38.0
+text = "Layout: Driver + 3 PiP"
+
+[node name="HelpText" type="Label" parent="MarginContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -36.0
+offset_right = 600.0
+offset_bottom = -12.0
+text = "Tab: Toggle layout | R: Reset | F3: Debug | Esc: Quit"
+
+[node name="PauseOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.35)

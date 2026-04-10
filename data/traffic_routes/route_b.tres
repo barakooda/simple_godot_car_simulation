@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TrafficPath" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/traffic/traffic_path.gd" id="1_path"]
+
+[resource]
+script = ExtResource("1_path")
+name = "route_b"
+points = PackedVector3Array(-60, 0.6, 0, 0, 0.6, -60, 60, 0.6, 0, 0, 0.6, 60)

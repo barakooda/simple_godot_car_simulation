@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="BoxMesh" id="BoxMesh_turn"]
+size = Vector3(12, 0.1, 12)
+
+[node name="RoadSegmentTurn" type="Node3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_turn")
