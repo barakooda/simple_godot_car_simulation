@@ -6,10 +6,14 @@ extends Node3D
 
 func sync_visuals(speed_mps: float, steer_norm: float, delta: float) -> void:
 	for wheel_path in wheel_nodes:
+		if wheel_path.is_empty():
+			continue
 		var wheel := get_node_or_null(wheel_path) as Node3D
 		if wheel:
 			wheel.rotate_x(-speed_mps * delta)
 	for steer_path in steer_wheels:
+		if steer_path.is_empty():
+			continue
 		var steer_node := get_node_or_null(steer_path) as Node3D
 		if steer_node:
 			var r := steer_node.rotation_degrees

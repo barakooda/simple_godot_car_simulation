@@ -44,19 +44,19 @@ albedo_color = Color(0.42, 0.42, 0.44, 1)
 metallic = 0.15
 roughness = 0.55
 
+[sub_resource type="BoxMesh" id="BoxMesh_sign_post"]
+size = Vector3(0.12, 2.6, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape_sign_post"]
+size = Vector3(0.12, 2.6, 0.12)
+
 [sub_resource type="StandardMaterial3D" id="Material_sign_plate"]
 albedo_color = Color(0.95, 0.96, 0.94, 1)
 metallic = 0.02
 roughness = 0.65
 
-[sub_resource type="BoxMesh" id="BoxMesh_sign_post"]
-size = Vector3(0.12, 2.6, 0.12)
-
 [sub_resource type="BoxMesh" id="BoxMesh_sign_plate"]
 size = Vector3(1.05, 0.65, 0.08)
-
-[sub_resource type="BoxShape3D" id="BoxShape_sign_post"]
-size = Vector3(0.12, 2.6, 0.12)
 
 [sub_resource type="BoxShape3D" id="BoxShape_sign_plate"]
 size = Vector3(1.05, 0.65, 0.08)
@@ -112,22 +112,16 @@ transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.55, 0)
 transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, 0)
 
 [node name="Road06" parent="Roads" unique_id=1948130702 instance=ExtResource("3_road")]
-transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, -60)
+transform = Transform3D(5.677673, 0, 0, 0, 1, 0, 0, 0, 1.3954952, 4.073227, 0.55, -61.01711)
 
-[node name="Road07" parent="Roads" unique_id=2075985941 instance=ExtResource("3_road")]
-transform = Transform3D(2.7570062, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.55, -60)
-
-[node name="Road08" parent="Roads" unique_id=1607459396 instance=ExtResource("3_road")]
-transform = Transform3D(2.2, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, 60)
-
-[node name="Road09" parent="Roads" unique_id=1505003034 instance=ExtResource("3_road")]
-transform = Transform3D(2.7653174, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.55, 60)
+[node name="Road07" parent="Roads" unique_id=1902334933 instance=ExtResource("3_road")]
+transform = Transform3D(5.677673, 0, 0, 0, 1, 0, 0, 0, 1.3954952, 4.073227, 0.55, 60.527584)
 
 [node name="Road10" parent="Roads" unique_id=406392382 instance=ExtResource("3_road")]
-transform = Transform3D(0.058640853, 0, 1.0058864, 0, 1, 0, -6.031877, 0, 0.009779085, -47.281174, 0.54326415, 1.6794415)
+transform = Transform3D(0.058977768, 0, 1.6003412, 0, 1, 0, -6.0665326, 0, 0.01555829, -48.298286, 0.54326415, 1.6794415)
 
 [node name="Road11" parent="Roads" unique_id=707245324 instance=ExtResource("3_road")]
-transform = Transform3D(-2.6367417e-07, 0, -1.005934, 0, 1, 0, 6.0321617, 0, -4.3970772e-08, 54.539623, 0.54326415, -0.05646515)
+transform = Transform3D(-2.6367417e-07, 0, -1.6550219, 0, 1, 0, 6.0321617, 0, -7.2343305e-08, 55.938152, 0.54326415, -0.05646515)
 
 [node name="Road12" parent="Roads" unique_id=1165466711 instance=ExtResource("3_road")]
 transform = Transform3D(-2.6226832e-07, 0, -1.001, 0, 0.995, 0, 6, 0, -4.37551e-08, -0.28278732, 0.54326415, -0.056467056)
@@ -152,22 +146,22 @@ transform = Transform3D(1, 0, 0, 0, 0.6, 0, 0, 0, 1, -100, 7.7, -90)
 [node name="B_OuterSE" parent="Buildings" unique_id=1803561635 instance=ExtResource("4_building")]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 1, 100, 8.9, 90)
 
-[node name="B_NorthWestTall" parent="Buildings" instance=ExtResource("4_building")]
+[node name="B_NorthWestTall" parent="Buildings" unique_id=1806203504 instance=ExtResource("4_building")]
 transform = Transform3D(1.25, 0, 0, 0, 1.35, 0, 0, 0, 1.2, -82, 16.9, -106)
 
-[node name="B_NorthEastWide" parent="Buildings" instance=ExtResource("4_building")]
+[node name="B_NorthEastWide" parent="Buildings" unique_id=1566798547 instance=ExtResource("4_building")]
 transform = Transform3D(1.45, 0, 0, 0, 0.72, 0, 0, 0, 1.4, 86, 9.3, -98)
 
-[node name="B_SouthWestMid" parent="Buildings" instance=ExtResource("4_building")]
+[node name="B_SouthWestMid" parent="Buildings" unique_id=1217457965 instance=ExtResource("4_building")]
 transform = Transform3D(0.95, 0, 0, 0, 1.02, 0, 0, 0, 0.95, -96, 12.8, 88)
 
-[node name="B_SouthEastTall" parent="Buildings" instance=ExtResource("4_building")]
-transform = Transform3D(1.05, 0, 0, 0, 1.28, 0, 0, 0, 1.05, 112, 16.0, 82)
+[node name="B_SouthEastTall" parent="Buildings" unique_id=686731160 instance=ExtResource("4_building")]
+transform = Transform3D(1.05, 0, 0, 0, 1.28, 0, 0, 0, 1.05, 112, 16, 82)
 
-[node name="B_WestBlockLow" parent="Buildings" instance=ExtResource("4_building")]
-transform = Transform3D(1.6, 0, 0, 0, 0.55, 0, 0, 0, 0.9, -132, 7.0, 4)
+[node name="B_WestBlockLow" parent="Buildings" unique_id=1919998245 instance=ExtResource("4_building")]
+transform = Transform3D(1.6, 0, 0, 0, 0.55, 0, 0, 0, 0.9, -132, 7, 4)
 
-[node name="B_EastBlockMid" parent="Buildings" instance=ExtResource("4_building")]
+[node name="B_EastBlockMid" parent="Buildings" unique_id=946109962 instance=ExtResource("4_building")]
 transform = Transform3D(1.55, 0, 0, 0, 0.88, 0, 0, 0, 0.95, 134, 11.2, -6)
 
 [node name="Sidewalks" type="Node3D" parent="." unique_id=1237797658]
@@ -194,19 +188,19 @@ transform = Transform3D(4.4811206, 0, 0, 0, 1, 0, 0, 0, 1, -25.926079, 0.625, 4)
 transform = Transform3D(4.4811206, 0, 0, 0, 1, 0, 0, 0, 1, -25.926079, 0.625, 55.71365)
 
 [node name="SW_NWN_N" parent="Sidewalks" unique_id=657287978 instance=ExtResource("5_sidewalk")]
-transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, -64)
+transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, -66.034225)
 
 [node name="SW_NWN_S" parent="Sidewalks" unique_id=1233643903 instance=ExtResource("5_sidewalk")]
-transform = Transform3D(4.5329556, 0, 0, 0, 1, 0, 0, 0, 1, -25.810673, 0.625, -56)
+transform = Transform3D(4.5329556, 0, 0, 0, 1, 0, 0, 0, 1, -25.810673, 0.625, -55.87286)
 
 [node name="SW_NNE_N" parent="Sidewalks" unique_id=1490440034 instance=ExtResource("5_sidewalk")]
-transform = Transform3D(8.615699, 0, 0, 0, 1, 0, 0, 0, 1, 24.883442, 0.625, -64)
+transform = Transform3D(9.324664, 0, 0, 0, 1, 0, 0, 0, 1, 24.883442, 0.625, -66.16136)
 
 [node name="SW_NNE_S" parent="Sidewalks" unique_id=1846613612 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, -56)
 
 [node name="SW_SWS_N3" parent="Sidewalks" unique_id=524842331 instance=ExtResource("5_sidewalk")]
-transform = Transform3D(0.15581523, 0, 1.0052719, 0, 1, 0, -16.027363, 0, 0.00977311, -51.30471, 0.6182642, 0.97681427)
+transform = Transform3D(0.16197594, 0, 1.0048875, 0, 1, 0, -16.661062, 0, 0.009769371, -53.59321, 0.6182642, -0.29457855)
 
 [node name="SW_SWS_S2" parent="Sidewalks" unique_id=1946850757 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(0.06269039, 0, 1.0121782, 0, 1, 0, -6.4484215, 0, 0.009840253, -43.257614, 0.6182642, -29.01154)
@@ -215,7 +209,7 @@ transform = Transform3D(0.06269039, 0, 1.0121782, 0, 1, 0, -6.4484215, 0, 0.0098
 transform = Transform3D(0.06395847, 0, 1.0240201, 0, 1, 0, -6.578859, 0, 0.009955375, -44.00817, 0.625, 29.171242)
 
 [node name="SW_SWS_N4" parent="Sidewalks" unique_id=1821955850 instance=ExtResource("5_sidewalk")]
-transform = Transform3D(-7.023537e-07, 0, -1.005934, 0, 1.0600423, 0, 16.06798, 0, -4.3970772e-08, 58.56336, 0.6182642, -0.05647278)
+transform = Transform3D(-7.3366e-07, 0, -1.005934, 0, 1.0600423, 0, 16.784185, 0, -4.3970772e-08, 61.23045, 0.6182642, -0.05647278)
 
 [node name="SW_SWS_S4" parent="Sidewalks" unique_id=963483336 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.55651e-07, 0, -1.012226, 0, 1, 0, 6.4487257, 0, -4.4245805e-08, 50.81461, 0.6182642, 30.672176)
@@ -235,14 +229,11 @@ transform = Transform3D(-2.3791067e-07, 0, -1.0242343, 0, 1, 0, 6.471526, 0, -4.
 [node name="SW_SSE_N" parent="Sidewalks" unique_id=1747043863 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, 56)
 
-[node name="SW_SSE_S" parent="Sidewalks" unique_id=1830514065 instance=ExtResource("5_sidewalk")]
-transform = Transform3D(8.83966, 0, 0, 0, 1, 0, 0, 0, 1, 24.207539, 0.625, 64)
-
 [node name="SW_SWS_S9" parent="Sidewalks" unique_id=2142859871 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.003011e-07, 0, -1.012226, 0, 1, 0, 5.0525365, 0, -4.424581e-08, 3.8604507, 0.6182642, -28.46653)
 
 [node name="SW_SWS_S" parent="Sidewalks" unique_id=1246602885 instance=ExtResource("5_sidewalk")]
-transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, 64)
+transform = Transform3D(14.617345, 0, 0, 0, 1, 0, 0, 0, 1, 3.5646362, 0.625, 65.859085)
 
 [node name="WayPoints" type="Node3D" parent="." unique_id=1228813912]
 
@@ -299,112 +290,112 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90, 0.5, 50)
 [node name="Tree8" parent="Trees" unique_id=1322415243 instance=ExtResource("1_tree")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 0.5, -50)
 
-[node name="Tree9" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree9" parent="Trees" unique_id=939549719 instance=ExtResource("1_tree")]
 transform = Transform3D(0.78, 0, 0, 0, 0.82, 0, 0, 0, 0.78, -58, 0.5, -88)
 
-[node name="Tree10" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree10" parent="Trees" unique_id=1028689089 instance=ExtResource("1_tree")]
 transform = Transform3D(1.35, 0, 0, 0, 1.42, 0, 0, 0, 1.35, 64, 0.5, -92)
 
-[node name="Tree11" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree11" parent="Trees" unique_id=2114061194 instance=ExtResource("1_tree")]
 transform = Transform3D(1.12, 0, 0, 0, 0.96, 0, 0, 0, 1.08, -76, 0.5, 86)
 
-[node name="Tree12" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree12" parent="Trees" unique_id=482282017 instance=ExtResource("1_tree")]
 transform = Transform3D(0.86, 0, 0, 0, 1.24, 0, 0, 0, 0.86, 70, 0.5, 88)
 
-[node name="Tree13" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree13" parent="Trees" unique_id=2072320877 instance=ExtResource("1_tree")]
 transform = Transform3D(1.58, 0, 0, 0, 1.66, 0, 0, 0, 1.58, -142, 0.5, -18)
 
-[node name="Tree14" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree14" parent="Trees" unique_id=1277734213 instance=ExtResource("1_tree")]
 transform = Transform3D(0.7, 0, 0, 0, 0.74, 0, 0, 0, 0.7, 146, 0.5, 20)
 
-[node name="Tree15" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree15" parent="Trees" unique_id=692976571 instance=ExtResource("1_tree")]
 transform = Transform3D(1.18, 0, 0, 0, 1.05, 0, 0, 0, 1.12, -16, 0.5, -114)
 
-[node name="Tree16" parent="Trees" instance=ExtResource("1_tree")]
+[node name="Tree16" parent="Trees" unique_id=357022691 instance=ExtResource("1_tree")]
 transform = Transform3D(0.92, 0, 0, 0, 1.36, 0, 0, 0, 0.92, 12, 0.5, 116)
 
-[node name="Signs" type="Node3D" parent="."]
+[node name="Signs" type="Node3D" parent="." unique_id=1475491218]
 
-[node name="Sign_NW" type="StaticBody3D" parent="Signs"]
+[node name="Sign_NW" type="StaticBody3D" parent="Signs" unique_id=932905164]
 transform = Transform3D(0.99939084, 0, -0.034899496, 0, 1, 0, 0.034899496, 0, 0.99939084, -35, 0.55, -54)
 
-[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_NW"]
+[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_NW" unique_id=1283426884]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 material_override = SubResource("Material_sign_post")
 mesh = SubResource("BoxMesh_sign_post")
 
-[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_NW"]
+[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_NW" unique_id=523369094]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 shape = SubResource("BoxShape_sign_post")
 
-[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_NW"]
+[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_NW" unique_id=1170583827]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 material_override = SubResource("Material_sign_plate")
 mesh = SubResource("BoxMesh_sign_plate")
 
-[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_NW"]
+[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_NW" unique_id=420354586]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 shape = SubResource("BoxShape_sign_plate")
 
-[node name="Sign_NE" type="StaticBody3D" parent="Signs"]
+[node name="Sign_NE" type="StaticBody3D" parent="Signs" unique_id=2026734943]
 transform = Transform3D(0.99939084, 0, 0.034899496, 0, 1, 0, -0.034899496, 0, 0.99939084, 35, 0.55, -54)
 
-[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_NE"]
+[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_NE" unique_id=1262901152]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 material_override = SubResource("Material_sign_post")
 mesh = SubResource("BoxMesh_sign_post")
 
-[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_NE"]
+[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_NE" unique_id=79694267]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 shape = SubResource("BoxShape_sign_post")
 
-[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_NE"]
+[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_NE" unique_id=427506234]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 material_override = SubResource("Material_sign_plate")
 mesh = SubResource("BoxMesh_sign_plate")
 
-[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_NE"]
+[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_NE" unique_id=1970123009]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 shape = SubResource("BoxShape_sign_plate")
 
-[node name="Sign_SW" type="StaticBody3D" parent="Signs"]
+[node name="Sign_SW" type="StaticBody3D" parent="Signs" unique_id=1664387550]
 transform = Transform3D(-0.99939084, 0, -0.034899496, 0, 1, 0, 0.034899496, 0, -0.99939084, -35, 0.55, 54)
 
-[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_SW"]
+[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_SW" unique_id=1811216781]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 material_override = SubResource("Material_sign_post")
 mesh = SubResource("BoxMesh_sign_post")
 
-[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_SW"]
+[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_SW" unique_id=15185620]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 shape = SubResource("BoxShape_sign_post")
 
-[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_SW"]
+[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_SW" unique_id=1983111695]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 material_override = SubResource("Material_sign_plate")
 mesh = SubResource("BoxMesh_sign_plate")
 
-[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_SW"]
+[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_SW" unique_id=1582481835]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 shape = SubResource("BoxShape_sign_plate")
 
-[node name="Sign_SE" type="StaticBody3D" parent="Signs"]
+[node name="Sign_SE" type="StaticBody3D" parent="Signs" unique_id=658212897]
 transform = Transform3D(-0.99939084, 0, 0.034899496, 0, 1, 0, -0.034899496, 0, -0.99939084, 35, 0.55, 54)
 
-[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_SE"]
+[node name="PostMesh" type="MeshInstance3D" parent="Signs/Sign_SE" unique_id=1142902472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 material_override = SubResource("Material_sign_post")
 mesh = SubResource("BoxMesh_sign_post")
 
-[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_SE"]
+[node name="PostCollision" type="CollisionShape3D" parent="Signs/Sign_SE" unique_id=651685649]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 shape = SubResource("BoxShape_sign_post")
 
-[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_SE"]
+[node name="PlateMesh" type="MeshInstance3D" parent="Signs/Sign_SE" unique_id=355831293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 material_override = SubResource("Material_sign_plate")
 mesh = SubResource("BoxMesh_sign_plate")
 
-[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_SE"]
+[node name="PlateCollision" type="CollisionShape3D" parent="Signs/Sign_SE" unique_id=1363226004]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38, 0)
 shape = SubResource("BoxShape_sign_plate")

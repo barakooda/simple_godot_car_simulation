@@ -16,8 +16,22 @@ var _waypoint_graph: AStar3D = AStar3D.new()
 func _ready() -> void:
 	if npc_scene == null:
 		npc_scene = preload("res://scenes/vehicles/npc_car.tscn")
+	# Defer route collection until the full main scene tree is initialized.
+	call_deferred("_initialize_traffic")
+
+func _initialize_traffic() -> void:
 	_collect_route_data()
 	_spawn_default_traffic()
+
+func _get_scene_root() -> Node:
+	var scene_root: Node = get_tree().current_scene
+	if scene_root != null:
+		return scene_root
+	# Fallback for tooling/headless launches where current_scene may not be set.
+	var main_node: Node = get_tree().root.find_child("Main", true, false)
+	if main_node != null:
+		return main_node
+	return get_tree().root
 
 func _collect_route_data() -> void:
 	_route_points = PackedVector3Array()
@@ -60,7 +74,7 @@ func _build_waypoint_graph() -> void:
 func _collect_road_footprints() -> void:
 	_road_nodes.clear()
 	_road_half_extents.clear()
-	var scene_root: Node = get_tree().current_scene
+	var scene_root: Node = _get_scene_root()
 	if scene_root == null:
 		return
 	var roads_root: Node3D = scene_root.find_child("Roads", true, false) as Node3D
@@ -81,7 +95,7 @@ func _collect_road_footprints() -> void:
 		_road_half_extents.append(half_extents)
 
 func _collect_waypoints_from_city_block() -> void:
-	var scene_root: Node = get_tree().current_scene
+	var scene_root: Node = _get_scene_root()
 	if scene_root == null:
 		return
 	var waypoints_root: Node3D = scene_root.find_child("WayPoints", true, false) as Node3D

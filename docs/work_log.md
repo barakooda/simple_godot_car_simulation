@@ -422,3 +422,37 @@ File modified:
 - Clarified Windows export strategy:
   - single-file testing builds can use embedded PCK,
   - release/public distribution is safer with non-embedded PCK and optional code signing.
+
+## 2026-04-11 Update - NPC traffic physics-body debug and fix
+
+### Problem observed
+- After converting NPC cars from `Node3D` to physics body roots, NPC traffic became invisible in-game.
+- Runtime checks showed NPC instances were still spawned under TrafficManager, but all were ending at world origin in probes.
+
+### Debugging performed
+- Added headless runtime probes to inspect:
+  - TrafficManager child count and spawned NPC nodes,
+  - NPC mesh visibility state,
+  - waypoint discovery and waypoint coordinates,
+  - NPC controller route state (waypoint count, route length, sampled curve point, current speed).
+- Confirmed route generation and sampling were valid, while node positions remained pinned at `(0, 0, 0)` in the problematic configuration.
+
+### Final fix applied
+- Switched NPC root type to `StaticBody3D` for reliable scripted transform movement with collision.
+- Updated NPC controller inheritance to `StaticBody3D`.
+- Kept collision shape on NPC scene so player collisions still work.
+- Kept route-following movement model (lightweight scripted traffic).
+- Updated vertical placement in movement code to use route sample Y (`path_position.y`) to keep cars on the road surface.
+- Improved traffic startup robustness:
+  - deferred traffic initialization with `call_deferred`,
+  - added safe scene-root fallback lookup for route/road discovery.
+
+### Result
+- NPC cars are visible again and move along their waypoint routes.
+- NPCs remain simple non-simulated traffic obstacles while still colliding with the player car.
+
+Files modified in this pass:
+- `scenes/vehicles/npc_car.tscn`
+- `scripts/vehicles/npc_car_controller.gd`
+- `scripts/traffic/traffic_manager.gd`
+- `scripts/vehicles/wheel_visual_sync.gd`

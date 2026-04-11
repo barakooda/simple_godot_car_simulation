@@ -1,4 +1,4 @@
-extends Node3D
+extends StaticBody3D
 
 @export var target_speed: float = 9.0
 @export var acceleration_rate: float = 4.0
@@ -16,6 +16,24 @@ var _route_curve: Curve3D = null
 var _route_length: float = 0.0
 var _path_progress: float = 0.0
 var _route_initialized: bool = false
+
+func get_route_debug_state() -> Dictionary:
+	var sample_point: Vector3 = Vector3.ZERO
+	if _route_curve != null and _route_length > 0.001:
+		sample_point = _route_curve.sample_baked(_path_progress, true)
+	var first_point: Vector3 = Vector3.ZERO
+	if _waypoints.size() > 0:
+		first_point = _waypoints[0]
+	return {
+		"waypoint_count": _waypoints.size(),
+		"route_length": _route_length,
+		"route_initialized": _route_initialized,
+		"has_curve": _route_curve != null,
+		"first_waypoint": first_point,
+		"sample_point": sample_point,
+		"current_speed": _current_speed,
+		"node_position": global_position
+	}
 
 func set_lane_offset(offset: float) -> void:
 	lane_offset = offset
@@ -85,7 +103,7 @@ func _physics_process(delta: float) -> void:
 		var right_local: Vector3 = Vector3(-travel_dir.z, 0.0, travel_dir.x)
 		path_position += right_local * lane_offset
 		lane_target += right_local * lane_offset
-	global_position = Vector3(path_position.x, global_position.y, path_position.z)
+	global_position = Vector3(path_position.x, path_position.y, path_position.z)
 
 	var facing_delta: Vector3 = lane_target - global_position
 	facing_delta.y = 0.0
