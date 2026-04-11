@@ -19,11 +19,11 @@ mesh = SubResource("BoxMesh_npc")
 material_override = SubResource("StandardMaterial3D_npc_red")
 
 [node name="FrontSensor" type="RayCast3D" parent="."]
-target_position = Vector3(0, 0, -6)
+target_position = Vector3(0, 0, 6)
 [node name="FrontLeftSensor" type="RayCast3D" parent="."]
-target_position = Vector3(-0.8, 0, -5)
+target_position = Vector3(0.8, 0, 5)
 [node name="FrontRightSensor" type="RayCast3D" parent="."]
-target_position = Vector3(0.8, 0, -5)
+target_position = Vector3(-0.8, 0, 5)
 
 [node name="RouteAnchor" type="Marker3D" parent="."]
 [node name="DebugMarker" type="Marker3D" parent="."]

@@ -6,6 +6,7 @@ extends RigidBody3D
 @export var max_speed: float = 22.2
 @export var steer_rate: float = 2.0
 @export var max_steer_angle: float = 0.38
+@export var steer_assist_multiplier: float = 1.2
 @export var lateral_grip: float = 8.5
 @export var angular_stability: float = 4.2
 @export var linear_drag: float = 0.0015
@@ -53,7 +54,8 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 	# ── Steering ──────────────────────────────────────────
 	var steer_scale: float = clampf(1.0 - (_state.speed_mps / max_speed) * 0.72, 0.12, 1.0)
-	_steering = move_toward(_steering, _input.steer * max_steer_angle * steer_scale, steer_rate * dt)
+	var effective_max_steer: float = max_steer_angle * maxf(steer_assist_multiplier, 0.0)
+	_steering = move_toward(_steering, _input.steer * effective_max_steer * steer_scale, steer_rate * dt)
 	var speed_factor: float = clampf(speed / 6.0, -1.0, 1.0)
 	var target_yaw: float = -_steering * 2.2 * speed_factor
 	state.angular_velocity.y = lerpf(state.angular_velocity.y, target_yaw, clampf(5.0 * dt, 0.0, 1.0))

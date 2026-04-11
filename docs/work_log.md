@@ -259,6 +259,43 @@ Building placement:
 - 2 outer buildings for variety
 - All buildings properly sit on ground (center Y = 12.5 for 24m tall mesh)
 
+### 16. 2026-04-11 Tuning and world expansion pass
+Summary of latest changes completed in this session:
+
+Player vehicle:
+- Increased chassis box height and collision height from 0.9 to 1.1.
+- Shifted player body mesh and collision +0.1 on Y to keep ground relationship clean.
+- Raised camera rig +0.1 on Y to match the taller player body.
+- Increased steering responsiveness with `steer_assist_multiplier = 1.2` (about 20% easier turn-in).
+- Updated player physics material bounce to 0.3 for stronger impact rebound.
+
+NPC traffic behavior:
+- Refined traffic manager to build waypoint-driven routes from `WayPoints` in city block.
+- Spawn count now follows waypoint count so cars distribute by available route anchors.
+- Added lane-offset controls (`lane_offset_base`, `lane_offset_step`, `lane_offset_extra`) passed into NPC controller.
+- Upgraded NPC path following to baked curve motion with look-ahead steering and forward-consistent lane offset.
+- Corrected NPC front sensor directions to positive Z forward in NPC scene.
+- Attempted physics-body NPC collision, then reverted to prior visible NPC setup when visibility issue appeared.
+
+World and environment content:
+- Expanded city decoration with additional building instances and varied transforms.
+- Added more tree instances with scale variation to improve biome diversity.
+- Added roadside sign set with reusable sign meshes/materials/collision under `Signs` node.
+- Preserved roads as named `Road01`..`Road12` for traffic/road-constrain logic compatibility.
+
+Scene and script normalization:
+- Applied indentation/style normalization in several helper scripts (debug/layout/world loader, etc.).
+- Updated main scene player placement transform and kept traffic manager instance active.
+
+Files with major updates in this pass:
+- `scenes/world/city_block.tscn`
+- `scenes/vehicles/player_car.tscn`
+- `scripts/vehicles/player_car_controller.gd`
+- `scripts/traffic/traffic_manager.gd`
+- `scripts/vehicles/npc_car_controller.gd`
+- `scenes/vehicles/npc_car.tscn`
+- `scenes/main/main.tscn`
+
 NPC path updated:
 - Waypoints follow the rectangular perimeter loop (8 points at corners and midpoints)
 - Spawn points placed on perimeter roads
