@@ -1,6 +1,6 @@
 # Car Simulator Work Log
 
-Last updated: 2026-04-11 (quad view + guarded driver click + steering tune)
+Last updated: 2026-04-11 (project cleanup — empty folders and unused scripts removed)
 Workspace: /home/barak/car_simulator
 
 ## Project Goal Snapshot
@@ -316,6 +316,34 @@ Files modified:
 - scenes/vehicles/player_car.tscn (can_sleep=false, contact_monitor=true)
 - scenes/world/city_block.tscn (complete rewrite)
 - scenes/main/main.tscn (player spawn position)
+
+### 17. 2026-04-11 Project cleanup — empty folders and unused scripts removed
+
+Audited the full project for dead weight and removed everything with no active references.
+
+Empty folders removed:
+- `assets/` (entire tree — `icons/`, `materials/`, `models/dirt_roads/`, `models/urban/`, `models/vehicles/`, `textures/`)
+- `shaders/`
+
+Unreferenced scripts removed (no scene, resource, or script referenced them):
+- `scripts/cameras/camera_feed_registry.gd`
+- `scripts/core/game.gd`
+- `scripts/core/signal_bus.gd`
+- `scripts/debug/debug_draw.gd`
+- `scripts/traffic/path_follower.gd`
+- `scripts/ui/layout_controller.gd`
+- `scripts/vehicles/respawn_manager.gd`
+- `scripts/vehicles/wheel_visual_sync.gd`
+- `scripts/world/checkpoint.gd`
+- `scripts/world/world_loader.gd`
+- All corresponding `.uid` sidecar files and the now-empty `scripts/world/` directory.
+
+Unreferenced data file removed:
+- `data/tuning/npc_car_settings.tres` (bare Resource stub with no backing script, never loaded)
+
+Verification method: cross-referenced all `.gd` files against `ext_resource` entries in every `.tscn`/`.tres`, autoloads in `project.godot`, `preload`/`load()` calls in scripts, and GDScript `class_name` usage.
+
+Result: Leaner repository, no functional code removed.
 
 ## Environment and Tooling Notes
 
