@@ -38,6 +38,42 @@ grow_vertical = 2
 custom_minimum_size = Vector2(0, 0)
 mouse_filter = 2
 
+[node name="QuadGrid" type="PanelContainer" parent="RootLayout/MainArea"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Grid" type="GridContainer" parent="RootLayout/MainArea/QuadGrid"]
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="QuadFront" parent="RootLayout/MainArea/QuadGrid/Grid" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="QuadRear" parent="RootLayout/MainArea/QuadGrid/Grid" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="QuadLeft" parent="RootLayout/MainArea/QuadGrid/Grid" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="QuadRight" parent="RootLayout/MainArea/QuadGrid/Grid" instance=ExtResource("1_panel")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
 [node name="MinimapPanel" parent="RootLayout/MainArea" instance=ExtResource("1_panel")]
 layout_mode = 1
 anchors_preset = 0
@@ -89,6 +125,11 @@ text = "Camera: Front"
 layout_mode = 2
 focus_mode = 0
 text = "Driver View"
+
+[node name="QuadViewButton" type="Button" parent="RootLayout/MainArea/InfoBar/InfoContent"]
+layout_mode = 2
+focus_mode = 0
+text = "Quad View"
 
 [node name="HelpText" type="Label" parent="RootLayout/MainArea/InfoBar/InfoContent"]
 layout_mode = 2

@@ -1,6 +1,6 @@
 # Car Simulator Work Log
 
-Last updated: 2026-04-10 (driver view click-toggle + reset)
+Last updated: 2026-04-11 (quad view + guarded driver click + steering tune)
 Workspace: /home/barak/car_simulator
 
 ## Project Goal Snapshot
@@ -456,3 +456,42 @@ Files modified in this pass:
 - `scripts/vehicles/npc_car_controller.gd`
 - `scripts/traffic/traffic_manager.gd`
 - `scripts/vehicles/wheel_visual_sync.gd`
+
+## 2026-04-11 Update - Quad view mode and input safety polish
+
+### HUD quad-view mode
+- Added a new `Quad View` mode for the main camera window.
+- Main area can now display a 2x2 layout with all four directional feeds together:
+  - Front
+  - Rear
+  - Left
+  - Right
+- Added a `Quad View` button in the HUD info bar.
+- Camera cycle now includes quad mode:
+  - front -> rear -> left -> right -> driver -> quad
+- Keyboard toggle action can switch between single-feed mode and quad mode.
+
+Files modified:
+- `scenes/ui/hud.tscn`
+- `scripts/ui/hud_controller.gd`
+
+### Driver-view click safety
+- Improved driver mouse-look toggle behavior so unrelated UI clicks do not affect driver active state.
+- Driver look toggle now only reacts to click events on the main camera texture area.
+- Clicking minimap, buttons, info bar, and other UI controls no longer accidentally toggles driver look.
+
+Files modified:
+- `scripts/ui/hud_controller.gd`
+
+### Player steering responsiveness
+- Increased steering response by approximately 10%.
+- Updated player controller default `steer_rate` from `2.0` to `2.2`.
+
+Files modified:
+- `scripts/vehicles/player_car_controller.gd`
+
+### Documentation refresh
+- Rewrote README to reflect current full project state, controls, architecture, and latest HUD/camera behavior.
+
+Files modified:
+- `README.md`

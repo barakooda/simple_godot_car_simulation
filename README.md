@@ -1,55 +1,92 @@
-# Urban Car Simulation in Godot
+# Urban Car Simulation (Godot 4.6)
 
-## Engine
-Godot 4.6.2-stable
+Compact urban driving sandbox built in Godot with:
+- arcade-style player car physics,
+- scripted NPC traffic on looped routes,
+- multi-camera vehicle rig,
+- HUD with live camera feeds, minimap, and camera controls.
 
-## Overview
-This project is a compact urban driving simulation backbone built in Godot.
-It includes a player-controlled car, simple NPC traffic, four attached vehicle cameras,
-and a HUD that displays all camera feeds live.
+## Engine and requirements
+- Godot: 4.6.x (tested on 4.6.2-stable)
+- Platform: Linux/Windows supported by Godot export targets
+- External dependencies: none
 
-The architecture is intentionally modular and beginner-friendly:
-- player vehicle control
-- NPC traffic flow
-- camera feed registry
-- HUD layout and binding
+## Current feature set
 
-## Run
-1. Open this folder in Godot 4.6.2-stable.
-2. Open `res://scenes/main/main.tscn`.
-3. Confirm it is the main scene.
-4. Run the project.
+### Driving and vehicle physics
+- Player car uses a custom `RigidBody3D` controller for throttle/brake/steer behavior.
+- Stable movement with speed cap, lateral grip, angular stabilization, and reset behavior.
+- Steering tuned for responsive arcade handling.
+
+### NPC traffic
+- NPCs are lightweight scripted traffic vehicles moving on waypoint-derived loops.
+- NPC bodies are `StaticBody3D` with colliders so they can physically affect the player car.
+- Follow-distance sensing via front raycasts for simple slow/stop spacing behavior.
+- Route setup is robust to startup timing through deferred traffic initialization.
+
+### Camera system
+- Vehicle-mounted feeds: front, rear, left, right, and driver.
+- Aerial helper feed used by minimap panel.
+- Adjustable per-camera FOV with lock/sync behavior across locked panels.
+
+### HUD and camera UX
+- Main camera area + right-side camera stack + minimap + info bar.
+- Click side panel to promote that feed to main view.
+- Driver-view mouse-look with guarded click activation.
+- New Quad View mode in main area (2x2 front/rear/left/right).
+- Keyboard and button flow include single-feed views + quad mode.
 
 ## Controls
+
+### Vehicle
 - `W` / `Up`: accelerate
 - `S` / `Down`: reverse
 - `A` / `Left`: steer left
 - `D` / `Right`: steer right
 - `Space`: brake / handbrake
 - `R`: reset vehicle
-- `Tab`: switch camera layout
-- `F3`: toggle debug
 - `Esc`: quit
 
-## Project structure
-- `scenes/vehicles`: player and NPC scenes
-- `scenes/cameras`: camera rig scene
-- `scenes/ui`: HUD and panel scenes
-- `scripts/vehicles`: movement and state scripts
-- `scripts/traffic`: traffic and path logic
-- `scripts/cameras`: feed plumbing
-- `scripts/ui`: UI control scripts
+### Camera and HUD
+- `Tab`: cycle main camera mode
+	- `front -> rear -> left -> right -> driver -> quad`
+- `Driver View` button: switch main view to driver camera
+- `Quad View` button: toggle 2x2 quad main view
+- Mouse wheel over minimap: zoom aerial camera
+- Click inside driver main texture: toggle mouse-look on/off
 
-## Architecture summary
-- `player_car_controller.gd` applies arcade-style `RigidBody3D` driving logic.
-- `vehicle_camera_rig.gd` owns the Front/Rear/Left/Right mounted cameras.
-- `camera_feed_registry.gd` exposes camera textures by stable feed id.
-- `traffic_manager.gd` spawns and manages NPC route followers.
-- `npc_car_controller.gd` follows lane paths and performs simple spacing-based braking.
-- `hud_controller.gd` binds camera feeds and speed data to HUD elements.
+## Run the project
+1. Open this repository in Godot 4.6.x.
+2. Ensure main scene is set to `res://scenes/main/main.tscn`.
+3. Run the project.
 
-## Dependencies
-No plugins or external addons are required for this backbone.
+## Project layout
+- `scenes/main`: application root scene
+- `scenes/world`: city block, roads, buildings, trees, environment
+- `scenes/vehicles`: player, NPC, traffic manager
+- `scenes/cameras`: vehicle camera rig
+- `scenes/ui`: HUD and reusable camera panel UI
+- `scripts/vehicles`: player/NPC controllers and vehicle helpers
+- `scripts/traffic`: route construction and NPC spawning
+- `scripts/cameras`: feed and rig behavior
+- `scripts/ui`: HUD logic and panel behavior
+- `docs`: design notes and implementation work log
 
-## Notes
-This is a practical scaffold designed to be easy to extend. It prioritizes clarity and iteration speed over full vehicle realism.
+## Key scripts
+- `scripts/vehicles/player_car_controller.gd`: player physics and handling
+- `scripts/vehicles/npc_car_controller.gd`: path-following NPC behavior
+- `scripts/traffic/traffic_manager.gd`: waypoint/road collection and traffic spawn
+- `scripts/cameras/vehicle_camera_rig.gd`: camera source/feed setup and sync
+- `scripts/ui/hud_controller.gd`: HUD feed routing, mode switching, and UI events
+
+## Debugging notes
+- If NPCs seem missing, verify `WayPoints` markers in the city scene and traffic manager spawn count.
+- If camera input feels wrong, verify current main mode (`driver`, single feed, or `quad`) in status text.
+- If steering feel changes are needed, tune `steer_rate` and `max_steer_angle` in player controller.
+
+## Status
+Project is playable and modular, with clear extension points for:
+- better traffic AI,
+- richer vehicle physics,
+- mission/gameplay loops,
+- export packaging and release pipeline.
