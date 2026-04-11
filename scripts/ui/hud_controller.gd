@@ -79,8 +79,8 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _cycle_main_feed() -> void:
-	_current_feed_index = (_current_feed_index + 1) % FEED_IDS.size()
-	_switch_main_feed(FEED_IDS[_current_feed_index])
+	_current_feed_index = (_current_feed_index + 1) % MAIN_FEED_IDS.size()
+	_switch_main_feed(MAIN_FEED_IDS[_current_feed_index])
 
 func _setup_panel(panel: Node, feed_id: String, label_text: String) -> void:
 	_set_panel_label(panel, label_text)
@@ -127,8 +127,8 @@ func _switch_main_feed(feed_id: String) -> void:
 	if feed_id != "driver" and _driver_look_enabled:
 		_set_driver_look_enabled(false)
 	_current_main_feed = feed_id
-	if FEED_IDS.has(feed_id):
-		_current_feed_index = FEED_IDS.find(feed_id)
+	if MAIN_FEED_IDS.has(feed_id):
+		_current_feed_index = MAIN_FEED_IDS.find(feed_id)
 	if _camera_rig and _camera_rig.has_method("get_feed"):
 		_set_panel_texture(_main_panel, _camera_rig.get_feed(_current_main_feed))
 	_update_selection_highlight()

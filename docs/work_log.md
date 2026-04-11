@@ -400,3 +400,25 @@ This section records only items that were implemented and verified in-session.
   - second left-click disables look control and releases the mouse.
 - Driver look input (mouse motion) is ignored unless look control is enabled.
 - When look control is toggled off, driver camera orientation resets to default forward alignment by clearing yaw/pitch offsets back to zero.
+
+## 2026-04-11 Update - HUD cycle + fullscreen defaults
+
+### HUD camera cycle update
+- Updated camera cycling logic so Tab/toggle now includes Driver view in the loop.
+- Main feed cycle order is now: front -> rear -> left -> right -> driver.
+- Main feed index synchronization now tracks `MAIN_FEED_IDS` consistently.
+
+File modified:
+- `scripts/ui/hud_controller.gd`
+
+### Project display defaults
+- Updated project window defaults from 1600x900 to 1920x1080.
+- Enabled fullscreen startup mode in project settings.
+
+File modified:
+- `project.godot`
+
+### Export guidance recorded
+- Clarified Windows export strategy:
+  - single-file testing builds can use embedded PCK,
+  - release/public distribution is safer with non-embedded PCK and optional code signing.
