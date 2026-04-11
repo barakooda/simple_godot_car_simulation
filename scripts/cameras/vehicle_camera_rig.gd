@@ -5,6 +5,8 @@ extends Node3D
 @export var side_fov: float = 70.0
 @export var aerial_fov: float = 55.0
 @export var driver_fov: float = 72.0
+@export var feed_resolution: Vector2i = Vector2i(640, 360)
+@export var driver_feed_resolution: Vector2i = Vector2i(1280, 720)
 @export var driver_look_limit_deg: float = 80.0
 @export var driver_pitch_limit_deg: float = 55.0
 @export var driver_mouse_sensitivity: float = 0.12
@@ -52,7 +54,7 @@ func _setup_feed(key: String, camera_name: String, fov: float) -> void:
 	viewport.disable_3d = false
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	viewport.msaa_3d = Viewport.MSAA_DISABLED
-	viewport.size = Vector2i(640, 360)
+	viewport.size = driver_feed_resolution if key == "driver" else feed_resolution
 
 	var feed_camera := Camera3D.new()
 	feed_camera.name = "%sFeedCamera" % key.capitalize()

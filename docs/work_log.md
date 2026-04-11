@@ -495,3 +495,15 @@ Files modified:
 
 Files modified:
 - `README.md`
+
+## 2026-04-11 Update - Higher-resolution driver camera feed
+
+### Driver camera resolution
+- Increased only the driver camera feed resolution for better main-view clarity.
+- Added separate exported viewport settings in the camera rig:
+  - standard feeds remain `640 x 360`
+  - driver feed is now `1280 x 720`
+- This keeps side/rear/left/right/aerial feeds lightweight while improving the most important view.
+
+Files modified:
+- `scripts/cameras/vehicle_camera_rig.gd`
