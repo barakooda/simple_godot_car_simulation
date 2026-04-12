@@ -32,3 +32,7 @@ current = true
 [node name="OptionalAerialHelperCamera" type="Camera3D" parent="."]
 transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 35, 0)
 current = false
+
+[node name="DebugSideCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.2, 0)
+current = false

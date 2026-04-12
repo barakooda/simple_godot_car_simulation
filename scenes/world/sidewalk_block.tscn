@@ -1,13 +1,27 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [sub_resource type="BoxMesh" id="BoxMesh_sidewalk"]
 size = Vector3(8, 0.25, 2)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_sidewalk"]
+friction = 1.0
+bounce = 0.0
 
 [sub_resource type="StandardMaterial3D" id="Material_concrete"]
 albedo_color = Color(0.7, 0.7, 0.75, 1)
 roughness = 0.5
 
+[sub_resource type="BoxShape3D" id="BoxShape_sidewalk"]
+size = Vector3(8, 0.1, 2)
+
 [node name="SidewalkBlock" type="Node3D"]
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_sidewalk")
 material_override = SubResource("Material_concrete")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_sidewalk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.06, 0)
+shape = SubResource("BoxShape_sidewalk")

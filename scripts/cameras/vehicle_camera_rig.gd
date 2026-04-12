@@ -5,6 +5,7 @@ extends Node3D
 @export var side_fov: float = 70.0
 @export var aerial_fov: float = 55.0
 @export var driver_fov: float = 72.0
+@export var debug_side_fov: float = 65.0
 @export var feed_resolution: Vector2i = Vector2i(640, 360)
 @export var driver_feed_resolution: Vector2i = Vector2i(1280, 720)
 @export var driver_look_limit_deg: float = 80.0
@@ -13,12 +14,15 @@ extends Node3D
 @export var aerial_height: float = 35.0
 @export var aerial_min_height: float = 10.0
 @export var aerial_max_height: float = 80.0
+@export var debug_side_offset: Vector3 = Vector3(-6.0, 2.2, 0.0)
+@export var debug_side_target_local: Vector3 = Vector3(0.0, 0.9, 0.0)
 
 var _feeds: Dictionary = {}
 var _cameras: Dictionary = {}
 var _source_cameras: Dictionary = {}
 var _feed_cameras: Dictionary = {}
 var _driver_source_camera: Camera3D = null
+var _debug_side_source_camera: Camera3D = null
 var _driver_base_transform: Transform3D = Transform3D.IDENTITY
 var _driver_yaw_deg: float = 0.0
 var _driver_pitch_deg: float = 0.0
@@ -30,10 +34,12 @@ func _ready() -> void:
 	_setup_feed("left", "LeftCamera", side_fov)
 	_setup_feed("right", "RightCamera", side_fov)
 	_setup_feed("aerial", "OptionalAerialHelperCamera", aerial_fov)
+	_setup_feed("debug", "DebugSideCamera", debug_side_fov)
 	set_aerial_height(aerial_height)
 	set_process(true)
 
 func _process(_delta: float) -> void:
+	_update_debug_side_camera()
 	for feed_name in _feed_cameras.keys():
 		_sync_feed_camera_transform(feed_name)
 
@@ -48,6 +54,8 @@ func _setup_feed(key: String, camera_name: String, fov: float) -> void:
 		_driver_base_transform = source_camera.transform
 		_driver_yaw_deg = 0.0
 		_driver_pitch_deg = 0.0
+	elif key == "debug":
+		_debug_side_source_camera = source_camera
 
 	var viewport := SubViewport.new()
 	viewport.name = "%sViewport" % key.capitalize()
@@ -103,6 +111,8 @@ func set_feed_fov(feed_name: String, fov: float) -> void:
 			side_fov = clamped_fov
 		"aerial":
 			aerial_fov = clamped_fov
+		"debug":
+			debug_side_fov = clamped_fov
 
 func has_feed(feed_name: String) -> bool:
 	return _feeds.has(feed_name)
@@ -118,6 +128,14 @@ func set_aerial_height(height: float) -> void:
 
 func get_aerial_height() -> float:
 	return aerial_height
+
+func _update_debug_side_camera() -> void:
+	if _debug_side_source_camera == null:
+		return
+	var target_position := global_position + global_transform.basis * debug_side_target_local
+	var offset_global := global_transform.basis * debug_side_offset
+	_debug_side_source_camera.global_position = global_position + offset_global
+	_debug_side_source_camera.look_at(target_position, global_transform.basis.y)
 
 func adjust_driver_look(delta_x: float, delta_y: float = 0.0) -> void:
 	if _driver_source_camera == null:

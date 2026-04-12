@@ -20,6 +20,7 @@ var _driver_look_enabled: bool = false
 @onready var _speedometer: Label = $RootLayout/MainArea/InfoBar/InfoContent/Speedometer
 @onready var _driver_view_button: Button = $RootLayout/MainArea/InfoBar/InfoContent/DriverViewButton
 @onready var _quad_view_button: Button = $RootLayout/MainArea/InfoBar/InfoContent/QuadViewButton
+@onready var _secret_debug_button: Button = $RootLayout/MainArea/InfoBar/InfoContent/SecretDebugButton
 
 @onready var _quad_front_panel: Node = $RootLayout/MainArea/QuadGrid/Grid/QuadFront
 @onready var _quad_rear_panel: Node = $RootLayout/MainArea/QuadGrid/Grid/QuadRear
@@ -42,6 +43,7 @@ func _ready() -> void:
 	_setup_quad_panel(_quad_right_panel, "right", "Right")
 	_driver_view_button.pressed.connect(_on_driver_view_pressed)
 	_quad_view_button.pressed.connect(_on_quad_view_pressed)
+	_secret_debug_button.pressed.connect(_on_secret_debug_pressed)
 	if _minimap_panel is Control:
 		(_minimap_panel as Control).gui_input.connect(_on_minimap_gui_input)
 
@@ -87,6 +89,13 @@ func _input(event: InputEvent) -> void:
 	var key_event := event as InputEventKey
 	if key_event and key_event.pressed and not key_event.echo and key_event.keycode == KEY_TAB:
 		_cycle_main_feed()
+		get_viewport().set_input_as_handled()
+		return
+	if key_event and key_event.pressed and not key_event.echo and key_event.keycode == KEY_T:
+		if _current_main_feed == "debug":
+			_switch_main_feed(_last_single_feed)
+		else:
+			_switch_main_feed("debug")
 		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed("toggle_camera_layout"):
@@ -152,12 +161,12 @@ func _refresh_fov_controls() -> void:
 	_set_panel_fov(_right_panel, _camera_rig.get_feed_fov("right"))
 
 func _switch_main_feed(feed_id: String) -> void:
-	if not MAIN_FEED_IDS.has(feed_id):
+	if not MAIN_FEED_IDS.has(feed_id) and feed_id != "debug":
 		return
 	if feed_id != "driver" and _driver_look_enabled:
 		_set_driver_look_enabled(false)
 	_current_main_feed = feed_id
-	if feed_id != "quad":
+	if feed_id != "quad" and feed_id != "debug":
 		_last_single_feed = feed_id
 	if MAIN_FEED_IDS.has(feed_id):
 		_current_feed_index = MAIN_FEED_IDS.find(feed_id)
@@ -172,6 +181,9 @@ func _on_driver_view_pressed() -> void:
 
 func _on_quad_view_pressed() -> void:
 	_toggle_quad_view()
+
+func _on_secret_debug_pressed() -> void:
+	_switch_main_feed("debug")
 
 func _toggle_quad_view() -> void:
 	if _current_main_feed == "quad":
@@ -282,6 +294,8 @@ func _update_selection_highlight() -> void:
 func _update_status_text() -> void:
 	if _current_main_feed == "quad":
 		_status_label.text = "Camera: Quad View"
+	elif _current_main_feed == "debug":
+		_status_label.text = "Camera: Debug Side"
 	else:
 		_status_label.text = "Camera: %s" % _current_main_feed.capitalize()
 
@@ -300,5 +314,3 @@ func _set_panel_label(panel: Node, text_value: String) -> void:
 func _set_panel_texture(panel: Node, texture: Texture2D) -> void:
 	if panel and panel.has_method("set_texture"):
 		panel.set_texture(texture)
-
-

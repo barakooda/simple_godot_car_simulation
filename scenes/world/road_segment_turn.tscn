@@ -1,8 +1,21 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [sub_resource type="BoxMesh" id="BoxMesh_turn"]
+size = Vector3(12, 0.1, 12)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_turn"]
+friction = 1.15
+bounce = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape_turn"]
 size = Vector3(12, 0.1, 12)
 
 [node name="RoadSegmentTurn" type="Node3D"]
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_turn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+physics_material_override = SubResource("PhysicsMaterial_turn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape_turn")

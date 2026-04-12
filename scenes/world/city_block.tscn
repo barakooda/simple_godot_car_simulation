@@ -27,10 +27,14 @@ fog_sky_affect = 0.35
 albedo_color = Color(0.2, 0.6, 0.15, 1)
 roughness = 0.8
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_grass"]
+friction = 0.7
+bounce = 0.0
+
 [sub_resource type="BoxMesh" id="BoxMesh_ground"]
 size = Vector3(400, 1, 400)
 
-[sub_resource type="BoxShape3D" id="BoxShape_ground"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_g5ve1"]
 size = Vector3(400, 1, 400)
 
 [sub_resource type="BoxShape3D" id="BoxShape_border_ns"]
@@ -67,14 +71,14 @@ size = Vector3(1.05, 0.65, 0.08)
 environment = SubResource("Environment_city_day")
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=1971365789]
+physics_material_override = SubResource("PhysicsMaterial_grass")
 
 [node name="GroundMesh" type="MeshInstance3D" parent="Ground" unique_id=24595872]
-transform = Transform3D(0.9981728, 0, 0, 0, 0.9981728, 0, 0, 0, 0.9981728, 0, 0, 0)
 material_override = SubResource("Material_grass")
 mesh = SubResource("BoxMesh_ground")
 
-[node name="GroundCollision" type="CollisionShape3D" parent="Ground" unique_id=258169384]
-shape = SubResource("BoxShape_ground")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1084598413]
+shape = SubResource("BoxShape3D_g5ve1")
 
 [node name="BorderWalls" type="StaticBody3D" parent="." unique_id=1942331769]
 
@@ -169,73 +173,73 @@ transform = Transform3D(1.55, 0, 0, 0, 0.88, 0, 0, 0, 0.95, 134, 11.2, -6)
 
 [node name="Sidewalks" type="Node3D" parent="." unique_id=1237797658]
 
-[node name="SW_SWS_N" parent="Sidewalks" unique_id=824404420 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk01" parent="Sidewalks" unique_id=824404420 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(0.026654933, 0, 1.0058864, 0, 1, 0, -2.7417622, 0, 0.009779085, -35.693565, -0.0067358017, 31.8045)
 
-[node name="SW_SWS_N2" parent="Sidewalks" unique_id=1993307705 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk02" parent="Sidewalks" unique_id=1993307705 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-1.1985189e-07, 0, -1.005934, 0, 1, 0, 2.7418916, 0, -4.3970772e-08, 42.659706, -0.0067358017, -30.067451)
 
-[node name="SW_CE_N" parent="Sidewalks" unique_id=2024293566 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk03" parent="Sidewalks" unique_id=2024293566 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, -4)
 
-[node name="SW_CE_S" parent="Sidewalks" unique_id=166456134 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk04" parent="Sidewalks" unique_id=166456134 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, 4)
 
-[node name="SW_CW_N" parent="Sidewalks" unique_id=208386493 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk05" parent="Sidewalks" unique_id=208386493 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(4.4455976, 0, 0, 0, 1, 0, 0, 0, 1, -25.720938, 0.625, -4)
 
-[node name="SW_CW_S" parent="Sidewalks" unique_id=1108306474 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk06" parent="Sidewalks" unique_id=1108306474 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(4.4811206, 0, 0, 0, 1, 0, 0, 0, 1, -25.926079, 0.625, 4)
 
-[node name="SW_CW_S2" parent="Sidewalks" unique_id=108602446 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk07" parent="Sidewalks" unique_id=108602446 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(4.4811206, 0, 0, 0, 1, 0, 0, 0, 1, -25.926079, 0.625, 55.71365)
 
-[node name="SW_NWN_N" parent="Sidewalks" unique_id=657287978 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk08" parent="Sidewalks" unique_id=657287978 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.625, -66.034225)
 
-[node name="SW_NWN_S" parent="Sidewalks" unique_id=1233643903 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk09" parent="Sidewalks" unique_id=1233643903 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(4.5329556, 0, 0, 0, 1, 0, 0, 0, 1, -25.810673, 0.625, -55.87286)
 
-[node name="SW_NNE_N" parent="Sidewalks" unique_id=1490440034 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk10" parent="Sidewalks" unique_id=1490440034 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(9.324664, 0, 0, 0, 1, 0, 0, 0, 1, 24.883442, 0.625, -66.16136)
 
-[node name="SW_NNE_S" parent="Sidewalks" unique_id=1846613612 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk11" parent="Sidewalks" unique_id=1846613612 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, -56)
 
-[node name="SW_SWS_N3" parent="Sidewalks" unique_id=524842331 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk12" parent="Sidewalks" unique_id=524842331 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(0.16197594, 0, 1.0048875, 0, 1, 0, -16.661062, 0, 0.009769371, -53.59321, 0.6182642, -0.29457855)
 
-[node name="SW_SWS_S2" parent="Sidewalks" unique_id=1946850757 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk13" parent="Sidewalks" unique_id=1946850757 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(0.06269039, 0, 1.0121782, 0, 1, 0, -6.4484215, 0, 0.009840253, -43.257614, 0.6182642, -29.01154)
 
-[node name="SW_SWS_S3" parent="Sidewalks" unique_id=1612225561 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk14" parent="Sidewalks" unique_id=1612225561 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(0.06395847, 0, 1.0240201, 0, 1, 0, -6.578859, 0, 0.009955375, -44.00817, 0.625, 29.171242)
 
-[node name="SW_SWS_N4" parent="Sidewalks" unique_id=1821955850 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk15" parent="Sidewalks" unique_id=1821955850 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-7.3366e-07, 0, -1.005934, 0, 1.0600423, 0, 16.784185, 0, -4.3970772e-08, 61.23045, 0.6182642, -0.05647278)
 
-[node name="SW_SWS_S4" parent="Sidewalks" unique_id=963483336 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk16" parent="Sidewalks" unique_id=963483336 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.55651e-07, 0, -1.012226, 0, 1, 0, 6.4487257, 0, -4.4245805e-08, 50.81461, 0.6182642, 30.672176)
 
-[node name="SW_SWS_S5" parent="Sidewalks" unique_id=1695681695 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk17" parent="Sidewalks" unique_id=1695681695 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.147261e-07, 0, -1.012226, 0, 1, 0, 5.416404, 0, -4.424581e-08, 3.8388023, 0.6182642, 29.686005)
 
-[node name="SW_SWS_S6" parent="Sidewalks" unique_id=1758748667 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk18" parent="Sidewalks" unique_id=1758748667 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.147261e-07, 0, -1.012226, 0, 1, 0, 5.416404, 0, -4.424581e-08, -4.231533, 0.6182642, 29.686)
 
-[node name="SW_SWS_S7" parent="Sidewalks" unique_id=199797776 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk19" parent="Sidewalks" unique_id=199797776 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.003011e-07, 0, -1.012226, 0, 1, 0, 5.0525365, 0, -4.424581e-08, -4.231533, 0.6182642, -28.46653)
 
-[node name="SW_SWS_S8" parent="Sidewalks" unique_id=543491131 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk20" parent="Sidewalks" unique_id=543491131 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.3791067e-07, 0, -1.0242343, 0, 1, 0, 6.471526, 0, -4.28555e-08, 50.99952, 0.625, -30.805132)
 
-[node name="SW_SSE_N" parent="Sidewalks" unique_id=1747043863 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk21" parent="Sidewalks" unique_id=1747043863 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(5.5, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.625, 56)
 
-[node name="SW_SWS_S9" parent="Sidewalks" unique_id=2142859871 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk22" parent="Sidewalks" unique_id=2142859871 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(-2.003011e-07, 0, -1.012226, 0, 1, 0, 5.0525365, 0, -4.424581e-08, 3.8604507, 0.6182642, -28.46653)
 
-[node name="SW_SWS_S" parent="Sidewalks" unique_id=1246602885 instance=ExtResource("5_sidewalk")]
+[node name="SideWalk23" parent="Sidewalks" unique_id=1246602885 instance=ExtResource("5_sidewalk")]
 transform = Transform3D(14.617345, 0, 0, 0, 1, 0, 0, 0, 1, 3.5646362, 0.625, 65.859085)
 
 [node name="WayPoints" type="Node3D" parent="." unique_id=1228813912]

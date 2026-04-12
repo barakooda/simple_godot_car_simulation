@@ -3,6 +3,10 @@
 [ext_resource type="PackedScene" path="res://scenes/cameras/vehicle_camera_rig.tscn" id="1_rig"]
 [ext_resource type="Script" uid="uid://dvgtapb0q0ram" path="res://scripts/vehicles/player_car_controller.gd" id="2_ctrl"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_car"]
+friction = 0.4
+bounce = 0.3
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_car_blue"]
 albedo_color = Color(0.12, 0.35, 0.95, 1)
 metallic = 0.05
@@ -14,16 +18,12 @@ size = Vector3(1.9, 1.1, 4)
 [sub_resource type="BoxShape3D" id="BoxShape_car"]
 size = Vector3(1.9, 1.1, 4)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_car"]
-friction = 0.4
-bounce = 0.3
-
 [node name="PlayerCar" type="RigidBody3D" unique_id=1891921409]
 mass = 1200.0
+physics_material_override = SubResource("PhysicsMaterial_car")
 can_sleep = false
 contact_monitor = true
 max_contacts_reported = 4
-physics_material_override = SubResource("PhysicsMaterial_car")
 script = ExtResource("2_ctrl")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="." unique_id=266760099]

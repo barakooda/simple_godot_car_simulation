@@ -518,6 +518,65 @@ Files modified:
 Files modified:
 - `scripts/vehicles/player_car_controller.gd`
 
+## 2026-04-12 Update - VehicleBody3D migration, world collision cleanup, and stability tuning
+
+### VehicleBody3D migration and wiring
+- Introduced a new player vehicle scene based on `VehicleBody3D` and a dedicated controller script.
+- Switched the main scene player instance to the new VehicleBody3D car.
+- Replaced old RigidBody-style force integration with VehicleBody3D native control (`steering`, `engine_force`, `brake`) in `_physics_process`.
+- Fixed steering direction inversion in the new controller.
+
+Files added:
+- `scenes/vehicles/player_car_VehicleBody3D.tscn`
+- `scripts/vehicles/player_car_controller_VehicleBody3D.gd`
+
+Files updated:
+- `scenes/main/main.tscn`
+
+### Camera and HUD debug workflow
+- Added a side debug camera feed to the vehicle camera rig.
+- Registered a new `debug` feed path in camera rig code.
+- Added secret HUD debug button and `T` keyboard toggle to switch main view to/from the debug feed.
+
+Files updated:
+- `scenes/cameras/vehicle_camera_rig.tscn`
+- `scripts/cameras/vehicle_camera_rig.gd`
+- `scenes/ui/hud.tscn`
+- `scripts/ui/hud_controller.gd`
+
+### Road/sidewalk collision refactor and warnings fix
+- Added/validated collision for road pieces and intersections.
+- Added collision for road turn segment.
+- Restructured road/intersection/sidewalk scene roots from `StaticBody3D` to `Node3D` with child `StaticBody3D` to avoid non-uniform scaling warnings on physics bodies.
+- Cleared stale editor cache selection that referenced an outdated ground collision path.
+
+Files updated:
+- `scenes/world/road_segment_straight.tscn`
+- `scenes/world/intersection_4way.tscn`
+- `scenes/world/road_segment_turn.tscn`
+- `scenes/world/sidewalk_block.tscn`
+- `scenes/world/city_block.tscn`
+
+### Surface friction pass
+- Added explicit `PhysicsMaterial` friction values for roads, intersections, sidewalks, turn segment, and city ground.
+
+### Vehicle stability pass
+- Normalized all four wheel suspension values to be identical for balanced behavior.
+- Reduced unstable acceleration behavior by lowering drive/reverse/brake force defaults.
+- Added engine force ramping (rise/fall rates) to remove abrupt throttle spikes.
+- Lowered and explicitly set center of mass to improve anti-flip behavior.
+- Set car physics bounce to zero to reduce pitch kick on bumps.
+
+Files updated:
+- `scenes/vehicles/player_car_VehicleBody3D.tscn`
+- `scripts/vehicles/player_car_controller_VehicleBody3D.gd`
+
+### Outcome
+- Player now uses VehicleBody3D path with native controls.
+- World roads/sidewalks have proper collision setup with fewer editor warnings.
+- Debug side camera workflow is available in HUD and by hotkey.
+- Vehicle is tuned to be more stable and less prone to backward flip under throttle.
+
 ### Documentation refresh
 - Rewrote README to reflect current full project state, controls, architecture, and latest HUD/camera behavior.
 
