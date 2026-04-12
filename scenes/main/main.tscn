@@ -15,7 +15,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.07733917, 0, -0.020866394)
 [node name="VehicleRoot" type="Node3D" parent="." unique_id=52635286]
 
 [node name="PlayerCar" parent="VehicleRoot" unique_id=865566104 instance=ExtResource("2_l3cfh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -26.383581, 2.6046033, 9.637235)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -26.383581, 2.6046033, 1.6167617)
 
 [node name="TrafficManager" parent="VehicleRoot" unique_id=514308906 instance=ExtResource("3_traffic")]
 

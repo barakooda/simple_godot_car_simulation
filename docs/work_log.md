@@ -594,3 +594,28 @@ Files modified:
 
 Files modified:
 - `scripts/cameras/vehicle_camera_rig.gd`
+
+## 2026-04-12 Update - VehicleBody3D follow-up tuning and scene-centralized parameters
+
+### Player vehicle collider and suspension follow-up
+- Refined `player_car_VehicleBody3D` body collision setup from one larger collider into a center + front/rear split box arrangement to better match the body profile.
+- Removed unused ground probe RayCast nodes from the VehicleBody3D player scene.
+- Updated wheel placement/suspension tuning iteratively for curb transition and body-roll control.
+- Added explicit wheel damping and roll influence values to reduce side-to-side hanging behavior.
+
+Files modified:
+- `scenes/vehicles/player_car_VehicleBody3D.tscn`
+
+### Single-source parameter control (scene-level authority)
+- Confirmed runtime tuning should be controlled from one place.
+- Set all exported `player_car_controller_VehicleBody3D.gd` parameters explicitly on the `PlayerCar` node in the scene so gameplay values are scene-authoritative.
+- This removes ambiguity between script defaults and inspector/scene overrides.
+
+Files modified:
+- `scenes/vehicles/player_car_VehicleBody3D.tscn`
+
+### Main scene placement tweak
+- Adjusted `PlayerCar` instance transform in `main.tscn` (Z position) for updated spawn placement.
+
+Files modified:
+- `scenes/main/main.tscn`
