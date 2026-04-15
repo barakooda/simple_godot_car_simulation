@@ -521,13 +521,13 @@ Files modified:
 ## 2026-04-15 Update - README presentation and minimap heading follow
 
 ### README presentation refresh
-- Added a centered gameplay screenshot near the top of the README using `docs/images/image.png`.
+- Added a centered gameplay screenshot near the top of the README using `docs/images/image.jpg`.
 - Sized the screenshot for normal repository reading width so it presents cleanly on GitHub without overwhelming the page.
 - Tightened the opening README summary to read more like a project header than a raw bullet list.
 
 Files modified:
 - `README.md`
-- `docs/images/image.png`
+- `docs/images/image.jpg`
 
 ### Aerial/minimap camera behavior update
 - Updated the aerial helper camera to follow the player car position continuously while preserving a top-down view.

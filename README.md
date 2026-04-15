@@ -1,7 +1,7 @@
 # Urban Car Simulation (Godot 4.6)
 
 <p align="center">
-	<img src="docs/images/image.png" alt="Urban Car Simulation gameplay screenshot showing the main driving view, minimap, and side camera feeds" width="960">
+	<img src="docs/images/image.jpg" alt="Urban Car Simulation gameplay screenshot showing the main driving view, minimap, and side camera feeds" width="960">
 </p>
 
 <p align="center">
