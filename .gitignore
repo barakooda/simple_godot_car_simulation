@@ -13,3 +13,4 @@ export_presets.cfg
 .DS_Store
 Thumbs.db
 docs/מטלת בית – פיתוח סימולציה משחק רכב אורבני.pdf
+docs/images/*.import
