@@ -40,8 +40,29 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_update_debug_side_camera()
+	_update_aerial_yaw_follow()
+
 	for feed_name in _feed_cameras.keys():
 		_sync_feed_camera_transform(feed_name)
+
+func _update_aerial_yaw_follow() -> void:
+	var aerial_source := _source_cameras.get("aerial", null) as Camera3D
+	if aerial_source == null:
+		return
+
+	# 1) Follow position only
+	var target := global_position
+	aerial_source.global_position = target + Vector3.UP * aerial_height
+
+	# 2) Extract yaw-only direction from car (remove pitch/roll)
+	var car_forward := global_transform.basis.z
+	car_forward.y = 0.0
+	if car_forward.length_squared() < 0.0001:
+		car_forward = Vector3.FORWARD
+	car_forward = car_forward.normalized()
+
+	# 3) Keep camera top-down; map top aligns with car yaw
+	aerial_source.look_at(target, car_forward)
 
 func _setup_feed(key: String, camera_name: String, fov: float) -> void:
 	var source_camera := find_child(camera_name, true, false) as Camera3D

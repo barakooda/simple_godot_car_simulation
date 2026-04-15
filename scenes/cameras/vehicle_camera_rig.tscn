@@ -1,38 +1,36 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bp5uoek5g1jq5"]
 
-[ext_resource type="Script" path="res://scripts/cameras/vehicle_camera_rig.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bsaoq8enpu6s7" path="res://scripts/cameras/vehicle_camera_rig.gd" id="1_script"]
 
-[node name="VehicleCameraRig" type="Node3D"]
+[node name="VehicleCameraRig" type="Node3D" unique_id=636652288]
 script = ExtResource("1_script")
 
-[node name="FrontCameraAnchor" type="Marker3D" parent="."]
+[node name="FrontCameraAnchor" type="Marker3D" parent="." unique_id=478089483]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.75, 1.55)
-[node name="FrontCamera" type="Camera3D" parent="FrontCameraAnchor"]
-current = false
 
-[node name="RearCameraAnchor" type="Marker3D" parent="."]
+[node name="FrontCamera" type="Camera3D" parent="FrontCameraAnchor" unique_id=60357663]
+
+[node name="RearCameraAnchor" type="Marker3D" parent="." unique_id=303753615]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -1.65)
-[node name="RearCamera" type="Camera3D" parent="RearCameraAnchor"]
-current = false
 
-[node name="LeftCameraAnchor" type="Marker3D" parent="."]
+[node name="RearCamera" type="Camera3D" parent="RearCameraAnchor" unique_id=922729676]
+
+[node name="LeftCameraAnchor" type="Marker3D" parent="." unique_id=1213091181]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0.98, 0.72, 0)
-[node name="LeftCamera" type="Camera3D" parent="LeftCameraAnchor"]
-current = false
 
-[node name="RightCameraAnchor" type="Marker3D" parent="."]
+[node name="LeftCamera" type="Camera3D" parent="LeftCameraAnchor" unique_id=2076984739]
+
+[node name="RightCameraAnchor" type="Marker3D" parent="." unique_id=832389920]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.98, 0.72, 0)
-[node name="RightCamera" type="Camera3D" parent="RightCameraAnchor"]
-current = false
 
-[node name="OptionalMainDriverCamera" type="Camera3D" parent="."]
+[node name="RightCamera" type="Camera3D" parent="RightCameraAnchor" unique_id=558032825]
+
+[node name="OptionalMainDriverCamera" type="Camera3D" parent="." unique_id=713187428]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.78, 0.48)
 current = true
 
-[node name="OptionalAerialHelperCamera" type="Camera3D" parent="."]
+[node name="OptionalAerialHelperCamera" type="Camera3D" parent="." unique_id=608997502]
 transform = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 35, 0)
-current = false
 
-[node name="DebugSideCamera" type="Camera3D" parent="."]
+[node name="DebugSideCamera" type="Camera3D" parent="." unique_id=542332315]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.2, 0)
-current = false

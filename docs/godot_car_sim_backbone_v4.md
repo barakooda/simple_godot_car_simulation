@@ -54,8 +54,11 @@ This section reflects what is currently implemented and working in the project.
 - Main window starts on Front camera.
 - Tab cycles main camera between front/rear/left/right.
 - Side camera cards can be clicked to set main view.
+- Driver view is available as a dedicated main camera mode with click-to-toggle mouse look.
+- Quad view mode is available for a 2x2 front/rear/left/right overview in the main panel.
 - Per-camera FOV controls are active (slider + numeric value + per-camera lock grouping).
 - Minimap zoom is controlled by mouse wheel while hovering the minimap.
+- Minimap heading now follows vehicle yaw while staying top-down, improving directional readability.
 - Live FPS counter is shown in the main window.
 - Camera rig follow issue is fixed by syncing SubViewport feed cameras to anchored source cameras on the vehicle.
 - Ground perimeter walls are present to keep the car inside world bounds.

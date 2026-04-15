@@ -1,5 +1,13 @@
 # Urban Car Simulation (Godot 4.6)
 
+<p align="center">
+	<img src="docs/images/image.png" alt="Urban Car Simulation gameplay screenshot showing the main driving view, minimap, and side camera feeds" width="960">
+</p>
+
+<p align="center">
+	Compact urban driving sandbox built in Godot 4.6 with arcade-style vehicle handling, looped NPC traffic, and a multi-camera HUD.
+</p>
+
 Compact urban driving sandbox built in Godot with:
 - arcade-style player car physics,
 - scripted NPC traffic on looped routes,

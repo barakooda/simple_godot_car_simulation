@@ -518,6 +518,30 @@ Files modified:
 Files modified:
 - `scripts/vehicles/player_car_controller.gd`
 
+## 2026-04-15 Update - README presentation and minimap heading follow
+
+### README presentation refresh
+- Added a centered gameplay screenshot near the top of the README using `docs/images/image.png`.
+- Sized the screenshot for normal repository reading width so it presents cleanly on GitHub without overwhelming the page.
+- Tightened the opening README summary to read more like a project header than a raw bullet list.
+
+Files modified:
+- `README.md`
+- `docs/images/image.png`
+
+### Aerial/minimap camera behavior update
+- Updated the aerial helper camera to follow the player car position continuously while preserving a top-down view.
+- Added yaw-only heading alignment so the top of the minimap tracks vehicle facing direction without inheriting vehicle pitch or roll.
+- This keeps the minimap easier to read during turning and while the car body tilts during physics response.
+
+Files modified:
+- `scripts/cameras/vehicle_camera_rig.gd`
+- `scenes/cameras/vehicle_camera_rig.tscn`
+
+Result:
+- README now has a presentable visual header.
+- Minimap orientation is more legible because map heading follows the car instead of remaining fixed.
+
 ## 2026-04-12 Update - VehicleBody3D migration, world collision cleanup, and stability tuning
 
 ### VehicleBody3D migration and wiring
